@@ -1,0 +1,166 @@
+SQL Day 4
+-------------
+Nested Sub Queries
+==================
+
+UC: Display all students that have enrolled in SQL Programming. 
+
+NOTE: We work on single table at a time. 
+
+select sname 
+from student
+where sid = (select sid 
+			 from student_course
+			 where cid = (select cid
+                          from course 
+						  where cname='SQL Programming'))
+
+ERROR 1242 (21000): Subquery returns more than 1 row
+
+select cid
+from course 
+where cname='SQL Programming'
+(1)
+
+select sid 
+from student_course
+where cid = (1)
+
+ 
+select sname 
+from student
+where sid = (1,2)
+Note: (1,2) are multiple rows and so cannot be used with = operator. 
+ 
+Solution: Use IN instead of =
+
+select sname 
+from student
+where sid IN (select sid 
+			 from student_course
+			 where cid IN (select cid
+                          from course 
+						  where cname='SQL Programming'))
+select sname 
+from student
+where sid IN (1,2)
+
+
+UC: display course(s) that belong to IT department. 
+
+select cname
+from course
+where did IN (select did
+			 from department
+			 where dname='IT')
+
+select did
+from department
+where dname='IT'
+(1)
+
+select cname
+from course
+where did IN (1)
+
++------------------+
+| cname            |
++------------------+
+| SQL Programming  |
+| Java Programming |
++------------------+
+
+UC: display all students that are associated with department 'IT'. 
+
+select sname
+from student
+where sid IN (select sid 
+			  from student_course 
+			  where cid IN ( select cid 
+							 from course where did IN (select did 
+													   from department 
+													   where dname='IT')))
+
++----------------+
+| sname          |
++----------------+
+| harry potter   |
+| ronald weasley |
++----------------+
+
+Nested Queries on Same table
+----------------------------
+UC: display all employees that have salary more than 
+Average salary of all employees. 
+
+Avg(esalary) = 84000 
+
+
+select ename,esalary
+from employee 
+where esalary > (select AVG(esalary) from employee); 
+
+mysql> select ename,esalary
+    -> from employee
+    -> where esalary > (select AVG(esalary) from employee);
++------------------+---------+
+| ename            | esalary |
++------------------+---------+
+| harry potter     |   85000 |
+| hermione granger |   90000 |
+| frodo baggins    |   90000 |
++------------------+---------+
+
+Schema
+=======
+customer(cid,cname,ccity)
+customer_product(cid,pid)
+product(pid,pname,price,vid)
+vendor(vid,vname)
+
+Query 1: 
+Display all products that have price more than average price of all product
+
+Query 2: 
+Display all customers who have bought product with name 'Oppo A12'
+
+Query 3: 
+display all customers who are associated with vendor with 
+name 'ABC Electronics'. 
+
+NOTE: Use Nested Sub Query Technique Only
+
+
+Q1: 
+select pname
+from product
+where price > (select AVG(price) from product) 
+
+Q2: 
+select cname
+from customer
+where cid IN (select cid 
+			  from customer_product 
+			  where pid IN (select pid 
+						    from product 
+							where pname='Oppo A12'))
+
+Q3: 
+select cname
+from customer
+where cid IN (select cid 
+			  from customer_product 
+			  where pid IN (select pid 
+						    from product
+							where vid IN (select vid 
+									   	  from vendor 
+									   	  where vname='ABC Electronics')));
+							
+
+
+
+
+
+
+
+
