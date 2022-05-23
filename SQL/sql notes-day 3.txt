@@ -1,0 +1,613 @@
+SQL Day 2
+---------
+SQL Structure 
+
+select <attributes> / <gouping-functions> (compulsary)
+from <tbl-name(s)>  (compulsary)
+where <condition(s)> (optional)
+group by <attribute> (optional)
+having <condition(s)>: group functions (optional)
+order by <attribute> ASC/DESC/ (optional)
+limit l /s,l  (optional)
+
+
+Group by
+======== 
+Grouping Functions / Aggregate functions 
+
+COUNT
+MIN
+MAX
+SUM
+AVG
+
+Note: MIN, MAX, SUM, AVG are arithmetic functions which work only on numeric attributes. 
+
+mysql> select SUM(esalary) from employee;
++--------------+
+| SUM(esalary) |
++--------------+
+|       414000 |
++--------------+
+1 row in set (0.00 sec)
+
+mysql> select AVG(esalary) from employee;
++--------------+
+| AVG(esalary) |
++--------------+
+|        82800 |
++--------------+
+1 row in set (0.00 sec)
+
+mysql> select MAX(esalary) from employee;
++--------------+
+| MAX(esalary) |
++--------------+
+|        90000 |
++--------------+
+1 row in set (0.00 sec)
+
+mysql> select MIN(esalary) from employee;
++--------------+
+| MIN(esalary) |
++--------------+
+|        75000 |
++--------------+
+1 row in set (0.00 sec)
+
+mysql> select COUNT(*) from employee;
++----------+
+| COUNT(*) |
++----------+
+|        5 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select COUNT(eno) from employee;
++------------+
+| COUNT(eno) |
++------------+
+|          5 |
++------------+
+1 row in set (0.00 sec)
+
+UC: Compute number of Employees in each city. 
+
+(group) ecity=london
+|   1 | harry potter     |   85000 | london     |
+|   3 | hermione granger |   90000 | london     |
+
+(group) ecity=manchester
+|   2 | ronald weasley   |   75000 | manchester |
+
+(group) ecity=shire
+|   5 | frodo baggins    |   87000 | shire      |
+|   6 | samwise gamejee  |   77000 | shire      |
+
+
+mysql> select ecity as CITY,count(eno) as NUMBER_OF_EMPLOYEE
+    -> from employee
+    -> group by ecity;
++------------+--------------------+
+| CITY       | NUMBER_OF_EMPLOYEE |
++------------+--------------------+
+| london     |                  2 |
+| manchester |                  1 |
+| shire      |                  2 |
++------------+--------------------+
+
+UC: Compute employees living in each city. The result set must have only those cities that has more than 1 employee. 
+
+select 
+from
+where 
+group by 
+
+mysql> select ecity,count(eno)
+    -> from employee
+    -> where count(eno) > 1
+    -> group by ecity;
+
+ERROR 1111 : invalid use of grouping function 
+
+[Having]
+1. having can be written after group-by 
+2. having can aloow programmer to call group function
+
+mysql> select ecity,count(eno)
+    -> from employee
+    -> group by ecity
+    -> having count(eno) > 1;
++--------+------------+
+| ecity  | count(eno) |
++--------+------------+
+| london |          2 |
+| shire  |          2 |
++--------+------------+
+
+mysql> select ecity,count(eno) as num_of_emp
+    -> from employee
+    -> group by ecity
+    -> having num_of_emp > 1;
++--------+------------+
+| ecity  | num_of_emp |
++--------+------------+
+| london |          2 |
+| shire  |          2 |
++--------+------------+
+
+UC: count employees in each city except 'manchester'. 
+
+|   1 | harry potter     |   85000 | london     |
+|   2 | ronald weasley   |   75000 | manchester |
+|   3 | hermione granger |   90000 | london     |
+|   5 | frodo baggins    |   87000 | shire      |
+|   6 | samwise gamejee  |   77000 | shire      |
+
+ecity <> 'manchester'
+
+|   1 | harry potter     |   85000 | london     |
+|   3 | hermione granger |   90000 | london     |
+|   5 | frodo baggins    |   87000 | shire      |
+|   6 | samwise gamejee  |   77000 | shire      |
+
+group by ecity
+ecity: london
+|   1 | harry potter     |   85000 | london     |
+|   3 | hermione granger |   90000 | london     |
+
+ecity:shire
+|   5 | frodo baggins    |   87000 | shire      |
+|   6 | samwise gamejee  |   77000 | shire      |
+
+
+mysql> select ecity, count(eno)
+    -> from employee
+    -> where ecity <> 'manchester'
+    -> group by ecity;
++--------+------------+
+| ecity  | count(eno) |
++--------+------------+
+| london |          2 |
+| shire  |          2 |
++--------+------------+
+
+UC: count number of employees in each city except 'shire' and having more then 1 employee living in it. 
+
+select ecity, count(eno)
+    -> from employee
+    -> where ecity <> 'shire'
+    -> group by ecity
+    -> having count(eno)>1;
++--------+------------+
+| ecity  | count(eno) |
++--------+------------+
+| london |          2 |
++--------+------------+
+
+UC: count number of employees in each city. city with maximum employee should be first. 
+
+A 5
+B 7
+C 3
+
+B 7
+A 5
+C 3  : Decending order (3,2,1)
+
+mysql> select ecity, count(eno) as cnt
+    -> from employee
+    -> group by ecity
+    -> order by cnt DESC;
++------------+-----+
+| ecity      | cnt |
++------------+-----+
+| london     |   2 |
+| shire      |   2 |
+| manchester |   1 |
++------------+-----+
+
+ 
+UC: count number of employees in each city. city with least number of employees should be first. 
+
+A 5
+B 7
+C 3
+
+C 3
+A 5
+B 7  : Ascending order (1,2,3..)
+
+mysql> select ecity, count(eno) as cnt
+    -> from employee
+    -> group by ecity
+    -> order by cnt;  <-- by default, its ASC
++------------+-----+
+| ecity      | cnt |
++------------+-----+
+| manchester |   1 |
+| london     |   2 |
+| shire      |   2 |
++------------+-----+
+
+ -> order by cnt ASC;   is also fine. 
+
+Structure:
+select
+from 
+where
+group by
+having
+order by 
+
+[limit clause]
+UC: count number of employees in each city. city with least number of employees should be first. There should only be 2 records in the result set 
+
+mysql> select ecity, count(eno) as cnt
+    -> from employee
+    -> group by ecity
+    -> order by cnt ASC
+    -> limit 2;
++------------+-----+
+| ecity      | cnt |
++------------+-----+
+| manchester |   1 |
+| london     |   2 |
++------------+-----+
+2 rows in set (0.00 sec)
+
+mysql> select ecity, count(eno) as cnt
+    -> from employee
+    -> group by ecity
+    -> order by cnt ASC
+    -> limit 1,2;
++--------+-----+
+| ecity  | cnt |
++--------+-----+
+| london |   2 |
+| shire  |   2 |
++--------+-----+
+2 rows in set (0.00 sec)
+
+Working with Multiple Tables
+=============================
+
+product(pid, pname, pprice,vid)
+vendor(vid, vname, vcity)
+
+mysql> create table product(pid int primary key auto_increment,pname varchar(255),pprice double,vid int);
+
+mysql> create table vendor(vid int primary key auto_increment,vname varchar(100),vcity varchar(100));
+
+
+mysql> insert into vendor(vname,vcity) values ('ABC Electronics', 'mumbai');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into vendor(vname,vcity) values ('XYZ Electronics', 'indore');
+
+mysql> insert into product(pname,pprice,vid) values('Oppo A12',13000, 1);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into product(pname,pprice,vid) values('Oppo A15',18000, 2);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into product(pname,pprice,vid) values('Apple SE',17000, 1);
+Query OK, 1 row affected (0.21 sec)
+
+mysql> insert into product(pname,pprice,vid) values('Apple iphone 6',23000, 2);
+Query OK, 1 row affected (0.32 sec)
+
+mysql> insert into product(pname,pprice,vid) values('Apple iphone 8',36000, 1);
+Query OK, 1 row affected (0.01 sec)
+
+[Manual Mapping]
+UC: Display all products sold by vendor 'ABC Electronics'. 
+mysql> select pname,pprice
+    -> from product,vendor
+    -> where product.vid = vendor.vid AND vname='ABC Electronics';
++----------------+--------+
+| pname          | pprice |
++----------------+--------+
+| Oppo A12       |  13000 |
+| Apple SE       |  17000 |
+| Apple iphone 8 |  36000 |
++----------------+--------+
+3 rows in set (0.01 sec)
+
+UC: compute total price of all products sold by vendor ABC Electronics. 
+
+mysql> select SUM(pprice) as Total_Price
+    -> from product,vendor
+    -> where product.vid = vendor.vid AND
+    -> vname='ABC Electronics';
++-------------+
+| Total_Price |
++-------------+
+|       66000 |
++-------------+
+
+UC: compute total price of all products for each vendor. 
+
+mysql> select vname, SUM(pprice) as Total_Price
+    -> from product,vendor
+    -> where product.vid = vendor.vid
+    -> group by vname;
++-----------------+-------------+
+| vname           | Total_Price |
++-----------------+-------------+
+| ABC Electronics |       66000 |
+| XYZ Electronics |       41000 |
++-----------------+-------------+
+
+UC: Count number of products for each vendor city. Only display those cities that have atleast 2 or more products. 
+
+
+select vname,count(pid)
+    -> from product,vendor
+    -> where product.vid= vendor.vid
+    -> group by vcity
+    -> having count(pid)>=2;
++----------------+------------+
+| vname          | count(pid) |
++----------------+------------+
+| XYZ Electronic |          2 |
+| ABC Electronic |          3 |
++----------------+------------+
+
+DB Design
+=========
+DB Schema
+-----------
+student(sid,sname,semail)
+student_course(sid,cid,enroll_date)
+course(cid,cname,ccredits,cfee,did)
+department(did,dname)
+
+DDL & DML
+----------
+mysql> create table student(sid int primary key auto_increment,sname varchar(255),semail varchar(255));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> create table department(did int primary key auto_increment, dname varchar(255));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> create table course(cid int primary key auto_increment,cname varchar(255),ccredits int,cfee double,did int);
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> create table student_course(sid int,cid int,enroll_date DATE);
+Query OK, 0 rows affected (0.03 sec)
+
+
+mysql> insert into student(sname,semail) values ('harry potter','harry@gmail.com');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into student(sname,semail) values ('ronald weasley','ron@gmail.com');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into student(sname,semail) values ('hermione granger','hermione@gmail.com');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from student;
++-----+------------------+--------------------+
+| sid | sname            | semail             |
++-----+------------------+--------------------+
+|   1 | harry potter     | harry@gmail.com    |
+|   2 | ronald weasley   | ron@gmail.com      |
+|   3 | hermione granger | hermione@gmail.com |
++-----+------------------+--------------------+
+3 rows in set (0.00 sec)
+
+
+mysql> insert into department(dname) values ('IT');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into department(dname) values ('COMPS');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from department;
++-----+-------+
+| did | dname |
++-----+-------+
+|   1 | IT    |
+|   2 | COMPS |
++-----+-------+
+2 rows in set (0.00 sec)
+
+
+mysql> insert into course(cname,ccredits,cfee,did) values ('SQL Programming', 80, 12000, 1);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into course(cname,ccredits,cfee,did) values ('Java Programming', 100, 18000, 2);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into course(cname,ccredits,cfee,did) values ('Angular Programming', 80, 15000, 1);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from course;
++-----+---------------------+----------+-------+------+
+| cid | cname               | ccredits | cfee  | did  |
++-----+---------------------+----------+-------+------+
+|   1 | SQL Programming     |       80 | 12000 |    1 |
+|   2 | Java Programming    |      100 | 18000 |    2 |
+|   3 | Angular Programming |       80 | 15000 |    1 |
++-----+---------------------+----------+-------+------+
+3 rows in set (0.00 sec)
+
+mysql> insert into student_course(sid,cid,enroll_date) values
+    -> (1,1,'2022-05-21');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into student_course(sid,cid,enroll_date) values
+    -> (1,3,'2022-05-21');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into student_course(sid,cid,enroll_date) values
+    -> (2,1,'2022-05-18');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into student_course(sid,cid,enroll_date) values
+    -> (3,2,'2022-05-20');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into student_course(sid,cid,enroll_date) values
+    -> (3,3,'2022-05-15');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from student_course;
++------+------+-------------+
+| sid  | cid  | enroll_date |
++------+------+-------------+
+|    1 |    1 | 2022-05-21  |
+|    1 |    3 | 2022-05-21  |
+|    2 |    1 | 2022-05-18  |
+|    3 |    2 | 2022-05-20  |
+|    3 |    3 | 2022-05-15  |
++------+------+-------------+
+
+Queries
+========
+UC: display all courses that belong to 'IT' department. 
+mysql> select cname
+    -> from course,department
+    -> where course.did = department.did AND
+    -> dname='IT';
++---------------------+
+| cname               |
++---------------------+
+| SQL Programming     |
+| Angular Programming |
++---------------------+
+
+UC: display all students that are enrolled in course 'SQL Programming'.
+ 
+mysql> select sname
+    -> from student,student_course,course
+    -> where student.sid = student_course.sid AND
+    -> student_course.cid = course.cid AND
+    -> cname='SQL Programming';
++----------------+
+| sname          |
++----------------+
+| harry potter   |
+| ronald weasley |
++----------------+
+
+[Using Alaising]
+mysql> select s.sname
+    -> from student as s, student_course as sc, course as c
+    -> where s.sid = sc.sid AND sc.cid = c.cid AND
+    -> c.cname='SQL Programming';
++----------------+
+| sname          |
++----------------+
+| harry potter   |
+| ronald weasley |
++----------------+
+
+UC: display student info that are associated with IT department.
+
+mysql> select distinct sname
+    -> from student s,student_course sc, course c, department d
+    -> where s.sid = sc.sid AND sc.cid = c.cid AND
+    -> c.did = d.did AND d.dname='IT';
++------------------+
+| sname            |
++------------------+
+| harry potter     |
+| ronald weasley   |
+| hermione granger |
++------------------+ 
+
+UC: Count number of students for each course. 
+
+mysql> select c.cname,COUNT(s.sid) as number_students
+    -> from student s, student_course sc, course c
+    -> where s.sid = sc.sid AND sc.cid = c.cid
+    -> group by cname;
++---------------------+-----------------+
+| cname               | number_students |
++---------------------+-----------------+
+| Angular Programming |               2 |
+| Java Programming    |               1 |
+| SQL Programming     |               2 |
++---------------------+-----------------+
+
+UC: count number of students associated with each department. display only those departments that have number more than 1. 
+
+mysql> select dname,count(s.sid)as number_student
+    -> from student s,studentA_course sc,course c,department d
+    -> where s.sid = sc.sid AND sc.cid = c.cid AND
+    -> c.did =d.did
+    -> group by dname
+    -> having number_student > 1;
++-------+----------------+
+| dname | number_student |
++-------+----------------+
+| IT    |              4 |
++-------+----------------+
+1 row in set (0.01 sec)
+
+
+UC: display all students that are enrolled in any course today.
+
+mysql> select now();
++---------------------+
+| now()               |
++---------------------+
+| 2022-05-21 16:19:01 |
++---------------------+
+
+[now() format: yyyy-mm-dd hh:MM:ss]
+mysql> select distinct sname
+    -> from student s,student_course sc
+    -> where s.sid = sc.sid AND enroll_date = now();
+Empty set (0.00 sec)
+
+Note: To detach time from now() use DATE()
+
+mysql> select DATE(now());
++-------------+
+| DATE(now()) |
++-------------+
+| 2022-05-21  |
++-------------+
+
+mysql> select distinct sname
+    -> from student s,student_course sc
+    -> where s.sid = sc.sid AND enroll_date = DATE(now());
++--------------+
+| sname        |
++--------------+
+| harry potter |
++--------------+
+
+Note: To get the current date directly we have curdate() 
+
+mysql> select CURDATE();
++------------+
+| CURDATE()  |
++------------+
+| 2022-05-21 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select distinct sname
+    -> from student s,student_course sc
+    -> where s.sid = sc.sid AND enroll_date = CURDATE();
++--------------+
+| sname        |
++--------------+
+| harry potter |
++--------------+
+1 row in set (0.00 sec)
+
+ 
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,427 @@
+Segue Batch TB16
+---------------
+SQL Day 1
+----------
+Installation
+  DDL: Data Definition Language
+      - create , alter 
+  DML: Data Manipulation Language
+      - Insert, UPDATE, DELETE 
+  Select: 
+      - operators: <, <= , >, >= , !=, <>, BETWEEN, NOT BETWEEN, IN, NOT IN, LIKE, IS, IS NOT 
+conjunctions: AND, OR    
+
+
+mysql> show databases;
+
+mysql> create database segue_16;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use segue_16;
+Database changed
+
+mysql> show tables;
+Empty set (0.01 sec)
+
+mysql> create table employee(eno int, ename varchar(255), esalary double);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> show tables;
++--------------------+
+| Tables_in_segue_16 |
++--------------------+
+| employee           |
++--------------------+
+mysql> drop table employee;
+
+mysql> create table employee(eno int primary key auto_increment, ename varchar(255) not null, esalary double default 0);
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> describe employee;
++---------+--------------+------+-----+---------+----------------+
+| Field   | Type         | Null | Key | Default | Extra          |
++---------+--------------+------+-----+---------+----------------+
+| eno     | int(11)      | NO   | PRI | NULL    | auto_increment |
+| ename   | varchar(255) | NO   |     | NULL    |                |
+| esalary | double       | YES  |     | 0       |                |
++---------+--------------+------+-----+---------+----------------+
+
+Constraints
+------------
+1. Not Null
+2. Primary Key
+3. Default 
+4. auto_increment(PK)
+
+[Alter table]
+UC: add a column ecity in the table employee. 
+
+Syntax: 
+------
+ALTER table <tbl-name>
+ADD COLUMN <column-name> <datatype> ...<constraints>
+
+Note: constraints are optional. 
+
+mysql> alter table employee
+    -> ADD COLUMN ecity varchar(50);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> describe employee;
++---------+--------------+------+-----+---------+----------------+
+| Field   | Type         | Null | Key | Default | Extra          |
++---------+--------------+------+-----+---------+----------------+
+| eno     | int(11)      | NO   | PRI | NULL    | auto_increment |
+| ename   | varchar(255) | NO   |     | NULL    |                |
+| esalary | double       | YES  |     | 0       |                |
+| ecity   | varchar(50)  | YES  |     | NULL    |                |
++---------+--------------+------+-----+---------+----------------+
+
+mysql> INSERT INTO employee(ename,esalary,ecity) values ('harry potter', 85000, 'london');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO employee(ename,esalary,ecity) values ('ronald weasley', 75000, 'manchester');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO employee(ename,esalary,ecity) values ('hermione granger', 90000, 'london');
+Query OK, 1 row affected (0.01 sec)
+
+Projection
+----------
+select <attributes> 
+from <tbl-name>
+
+mysql> select eno,ename,esalary,ecity
+    -> from employee;
+
+mysql> select * from employee;
++-----+------------------+---------+------------+
+| eno | ename            | esalary | ecity      |
++-----+------------------+---------+------------+
+|   1 | harry potter     |   85000 | london     |
+|   2 | ronald weasley   |   75000 | manchester |
+|   3 | hermione granger |   90000 | london     |
++-----+------------------+---------+------------+
+
+Tip: donot use * in development. 
+
+Criteria
+--------
+select <attr-list>
+from <tbl-name>
+where  <condition(s)> <-- where clause
+
+UC: display employees having salary greater than 85000. 
+
+mysql> select ename
+    -> from employee
+    -> where esalary > 85000;
++------------------+
+| ename            |
++------------------+
+| hermione granger |
++------------------+
+
+UC: display employees having salary greater than or equal to 85000. 
+
+mysql> select ename
+    -> from employee
+    -> where esalary >= 85000;
++------------------+
+| ename            |
++------------------+
+| harry potter     |
+| hermione granger |
++------------------+
+
+UC: display employees having salary less than or equal to 85000. 
+
+mysql> select ename
+    -> from employee
+    -> where esalary <= 85000;
++----------------+
+| ename          |
++----------------+
+| harry potter   |
+| ronald weasley |
++----------------+
+
+UC: display employees having salary bot equal to 85000. 
+
+mysql> select ename
+    -> from employee
+    -> where esalary != 85000;
+
+mysql> select ename
+    -> from employee
+    -> where esalary <> 85000;
+
++------------------+
+| ename            |
++------------------+
+| ronald weasley   |
+| hermione granger |
++------------------+
+
+Note: Prefer <> over !- operator. 
+
+operators: <, <= , >, >= , !=, <>
+conjunctions: AND, OR 
+
+UC: display employees having salary greater than 85000 and living in city london. 
+
+mysql> select ename
+    -> from employee
+    -> where esalary>85000 AND ecity='london';
++------------------+
+| ename            |
++------------------+
+| hermione granger |
++------------------+
+
+UC: display employees having salary greater than 85000 OR living in city london. 
+
+mysql> select ename
+    -> from employee
+    -> where esalary>85000 OR ecity='london';
++------------------+
+| ename            |
++------------------+
+| harry potter     |
+| hermione granger |
++------------------+
+
+[Between]
+UC: display employees having salary greater than or equal to 75000 and less than or equal to 85000. (75000-85000)
+
+mysql> select ename
+    -> from employee
+    -> where esalary between 75000 AND 85000;
++----------------+
+| ename          |
++----------------+
+| harry potter   |
+| ronald weasley |
++----------------+
+
+[Not between]
+mysql> select ename
+    -> from employee
+    -> where esalary not between 75000 AND 85000;
++------------------+
+| ename            |
++------------------+
+| hermione granger |
++------------------+
+
+[IN]
+UC: display employees that live in following cities.
+- london
+- paris
+- mumbai
+
+mysql> select ename
+    -> from employee
+    -> where ecity IN ('london','paris','mumbai');
++------------------+
+| ename            |
++------------------+
+| harry potter     |
+| hermione granger |
++------------------+ 
+
+[NOT IN]
+mysql> select ename
+    -> from employee
+    -> where ecity NOT IN ('london','paris','mumbai');
++----------------+
+| ename          |
++----------------+
+| ronald weasley |
++----------------+
+
+[LIKE]
+
+LIKE %<pattern>%
+
+UC: search for pattern 'harry' in ename in employee table. 
+
+mysql> select ename
+    -> from employee
+    -> where ename LIKE '%harry%';
++--------------+
+| ename        |
++--------------+
+| harry potter |
++--------------+
+
+LIKE %h%
+mysql> select ename
+    -> from employee
+    -> where ename LIKE '%h%';
++------------------+
+| ename            |
++------------------+
+| harry potter     |
+| hermione granger |
++------------------+
+
+UC: determine the employee having the initial character as 'r'. 
+
+LIKE r%
+
+mysql> select ename
+    -> from employee
+    -> where ename LIKE 'r%';
++----------------+
+| ename          |
++----------------+
+| ronald weasley |
++----------------+
+
+UC:  determine the employee having the last character as 'r'. 
+
+LIKE %r
+
+mysql> select ename
+    -> from employee
+    -> where ename LIKE '%r';
++------------------+
+| ename            |
++------------------+
+| harry potter     |
+| hermione granger |
++------------------+
+
+UC: determine the employee having the second last character as 'e'. 
+
+LIKE %e_
+
+mysql> select ename
+    -> from employee
+    -> where ename LIKE '%e_';
++------------------+
+| ename            |
++------------------+
+| harry potter     |
+| ronald weasley   |
+| hermione granger |
++------------------+
+
+UC: determine the employee having the second character as 'a'. 
+
+LIKE _a%
+
+mysql> select ename
+    -> from employee
+    -> where ename LIKE '_a%';
++--------------+
+| ename        |
++--------------+
+| harry potter |
++--------------+
+
+
+
+UC: display employees having city as NULL
+
+mysql> insert into employee(ename,esalary) values ('draco malfoy',88000);
+
+
+[Incorrect]
+mysql> select ename
+    -> from employee
+    -> where ecity = NULL;
+Empty set (0.00 sec)
+
+Tip: use IS and IS NOT to compare with NULL
+
+[Correct]
+mysql> select ename
+    -> from employee
+    -> where ecity IS NULL;
++--------------+
+| ename        |
++--------------+
+| draco malfoy |
++--------------+
+[IS NOT]
+mysql> select ename
+    -> from employee
+    -> where ecity IS NOT NULL;
++------------------+
+| ename            |
++------------------+
+| harry potter     |
+| ronald weasley   |
+| hermione granger |
++------------------+
+
+UC: update the city of employee having eno=4. 
+
+update <tbl-name>
+SET <column> = <new-value>
+WHERE <condition>
+
+mysql> UPDATE employee
+    -> SET ecity='manchester'
+    -> where eno=4;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from employee;
++-----+------------------+---------+------------+
+| eno | ename            | esalary | ecity      |
++-----+------------------+---------+------------+
+|   1 | harry potter     |   85000 | london     |
+|   2 | ronald weasley   |   75000 | manchester |
+|   3 | hermione granger |   90000 | london     |
+|   4 | draco malfoy     |   88000 | manchester |
++-----+------------------+---------+------------+
+ 
+Update Multiple column values.
+
+update <tbl-name>
+SET <column> = <new-value>, <column> = <new-value>,...
+WHERE <condition>
+
+mysql> UPDATE employee
+    -> SET ename='Draco Malfoy', esalary=87000, ecity='liverpool'
+    -> where eno=4;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
++-----+------------------+---------+------------+
+| eno | ename            | esalary | ecity      |
++-----+------------------+---------+------------+
+|   1 | harry potter     |   85000 | london     |
+|   2 | ronald weasley   |   75000 | manchester |
+|   3 | hermione granger |   90000 | london     |
+|   4 | Draco Malfoy     |   87000 | liverpool  |
++-----+------------------+---------+------------+
+
+DELETE Operation
+----------------
+mysql> DELETE from employee
+    -> where eno=4;
+Query OK, 1 row affected (0.01 sec)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
