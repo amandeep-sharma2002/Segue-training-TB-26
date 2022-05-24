@@ -1,0 +1,35 @@
+GIT COMMANDS
+------------
+git clone <git-url>
+	- this command is used for the very first time to set up local git from remote git. 
+
+git add <file(s)> / git add . 
+	- this command adds all the recently created or changed files to local git. 
+
+git commit -m "message"
+	- this command commits all changes to local git. 
+
+git push origin 
+	- this command pushes the code from local to remote git. 
+
+git checkout -b "branch-name"
+	- this command creates a new branch/folder in remote git
+
+git pull origin
+	- this command pulls the code from remote git to local git. 
+
+git merge 
+	- this will merge the branch with 'main' branch
+
+remote git can be accessed in 2 ways:
+1. https
+2. ssh key 
+ 
+GIT has many free platforms 
+1. GitHub (preferred)
+2. GitLab
+3. BitBucket 
+4. AWSGit
+
+NOTE: refer internet for more git commands. In practice, we mostly use above commands but for assessment you should go through some git command sheet over the internet. 
+
