@@ -1,0 +1,250 @@
+SQL Day 5
+----------
+
+JOINS
+=====
+
+1. Inner Join / Natural Join 
+2. Left Outer Join
+3. Right Outer Join 
+4. Self Join 
+
+Scenario
+--------
+project
++-----+-------------------+---------+------+
+| pid | pname             | credits | did  |
++-----+-------------------+---------+------+
+|   1 | Banking           |     100 |    1 |
+|   2 | Insurance         |      80 |    2 |
+|   3 | ECom              |      90 |    1 |
+|   4 | Health Plus       |      60 |    2 |
+|   5 | Digital Transform |     100 | NULL |
++-----+-------------------+---------+------+
+department
++-----+-------+
+| did | dname |
++-----+-------+
+|   1 | IT    |
+|   2 | COMPS |
+|   3 | ADMIN |
++-----+-------+
+
+Inner Join / Natural Join 
+Note: It will add all those rows in the result set that have common values/connected values in both the tables. 
+
+select *
+from project inner join department ON project.did = department.did
+ 
++-----+-------------+---------+------+-----+-------+
+| pid | pname       | credits | did  | did | dname |
++-----+-------------+---------+------+-----+-------+
+|   1 | Banking     |     100 |    1 |   1 | IT    |
+|   2 | Insurance   |      80 |    2 |   2 | COMPS |
+|   3 | ECom        |      90 |    1 |   1 | IT    |
+|   4 | Health Plus |      60 |    2 |   2 | COMPS |
++-----+-------------+---------+------+-----+-------+
+
+LEFT OUTER JOIN
+----------------  
+mysql> select *
+    -> from project left outer join department ON project.did = department.did;
++-----+-------------------+---------+------+------+-------+
+| pid | pname             | credits | did  | did  | dname |
++-----+-------------------+---------+------+------+-------+
+|   1 | Banking           |     100 |    1 |    1 | IT    |
+|   2 | Insurance         |      80 |    2 |    2 | COMPS |
+|   3 | ECom              |      90 |    1 |    1 | IT    |
+|   4 | Health Plus       |      60 |    2 |    2 | COMPS |
+|   5 | Digital Transform |     100 | NULL | NULL | NULL  |
++-----+-------------------+---------+------+------+-------+
+
+In the above output, all the records of LEFT table(project) is part of the result set. for corresponding department entries for project 5, all fields are marked as NULL. 
+
+TIP: we can also implement the above example by writing 'left join' instead of 'left outer join'. 
+
+RIGHT OUTER JOIN
+-----------------------
+mysql> select *
+    -> from project right outer join department ON project.did = department.did;
+ 
++------+-------------+---------+------+-----+-------+
+| pid  | pname       | credits | did  | did | dname |
++------+-------------+---------+------+-----+-------+
+|    1 | Banking     |     100 |    1 |   1 | IT    |
+|    3 | ECom        |      90 |    1 |   1 | IT    |
+|    2 | Insurance   |      80 |    2 |   2 | COMPS |
+|    4 | Health Plus |      60 |    2 |   2 | COMPS |
+| NULL | NULL        |    NULL | NULL |   3 | ADMIN |
++------+-------------+---------+------+-----+-------+
+
+In the above output, all the records of RIGHT table(department) is part of the result set. For corresponding project entries for department 3, all fields are marked as NULL. 
+
+TIP: we can also implement the above example by writing 'right join' instead of 'right outer join'. 
+
+SELF JOIN
+---------
+employee(eno, ename, esalary, mgrno)
+
++-----+------------------+---------+-------+
+| eno | ename            | esalary | mgrno |
++-----+------------------+---------+-------+
+|   1 | Albus Dumbledore |  320000 |  NULL |
+|   2 | Severus Snape    |  190000 |     1 |
+|   3 | Harry Potter     |   85000 |     2 |
+|   4 | Ronald Weasley   |   75000 |     2 |
++-----+------------------+---------+-------+
+
+UC: display the name of the manager of emp no 3. 
+
+select ename
+from employee
+where eno= (select mgrno from employee where eno=3)
+
+(2)
+select mgrno 
+from employee
+where eno=3; 
+
+UC: Display the names of employees having manager as 'Severus Snape'
+
+mysql> select ename
+    -> from employee
+    -> where mgrno=(select eno from employee where ename='Severus Snape')
+    -> ;
++----------------+
+| ename          |
++----------------+
+| Harry Potter   |
+| Ronald Weasley |
++----------------+
+
+UC: Find all the managers who are managing atleast 1 employee
+UC: Find all employees who have the manager. 
+
+
++-----+------------------+---------+-------+
+| eno | ename            | esalary | mgrno |
++-----+------------------+---------+-------+
+|e1 1 | Albus Dumbledore |  320000 |  NULL |
+|   2 | Severus Snape    |  190000 |     1 | e2  
+|   3 | Harry Potter     |   85000 |     2 | 
+|   4 | Ronald Weasley   |   75000 |     2 | 
++-----+------------------+---------+-------+
+
+mysql> select _______ 
+    -> from employee e1, employee e2
+    -> where e1.eno = e2.mgrno;
+
+  Manager Name: e1.ename
+  Employee Name: e2.ename
+
+mysql> select  e2.ename,e1.ename from employee e1,employee e2 where e1.eno=e2.mgrno;
++----------------+------------------+
+| ename          | ename            |
++----------------+------------------+
+| Severus Snape  | Albus Dumbledore |
+| Harry Potter   | Severus Snape    |
+| Ronald Weasley | Severus Snape    |
++----------------+------------------+
+
+Working with Dates
+------------------
+
+mysql> drop table employee;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> create table employee(eno int primary key auto_increment,ename varchar(50),esalary double,date_of_joining DATE);
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> insert into employee(ename,esalary,date_of_joining) values ('harry potter', 85000, '2022-05-24');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into employee(ename,esalary,date_of_joining) values ('ronald weasley', 75000, '2022-05-24');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into employee(ename,esalary,date_of_joining) values ('hermione granger', 90000, '2022-05-20');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into employee(ename,esalary,date_of_joining) values ('draco malfoy', 82000, '2022-05-27');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from employee;
++-----+------------------+---------+-----------------+
+| eno | ename            | esalary | date_of_joining |
++-----+------------------+---------+-----------------+
+|   1 | harry potter     |   85000 | 2022-05-24      |
+|   2 | ronald weasley   |   75000 | 2022-05-24      |
+|   3 | hermione granger |   90000 | 2022-05-20      |
+|   4 | draco malfoy     |   82000 | 2022-05-27      |  
++-----+------------------+---------+-----------------+
+4 rows in set (0.00 sec)
+
+UC: display all employees who have joined today. 
+
+mysql> select ename
+    -> from employee
+    -> where date_of_joining='2022-05-24';
++----------------+
+| ename          |
++----------------+
+| harry potter   |
+| ronald weasley |
++----------------+
+
+mysql> select ename
+    -> from employee
+    -> where date_of_joining=now();
+Empty set (0.00 sec)
+
+
+mysql> select now();
++---------------------+
+| now()               |
++---------------------+
+| 2022-05-24 11:45:53 |
++---------------------+
+
+mysql> select DATE(now());
++-------------+
+| DATE(now()) |
++-------------+
+| 2022-05-24  |
++-------------+
+
+mysql> select ename
+    -> from employee
+    -> where date_of_joining=DATE(now());
++----------------+
+| ename          |
++----------------+
+| harry potter   |
+| ronald weasley |
++----------------+
+
+mysql> select CURDATE();
++------------+
+| CURDATE()  |
++------------+
+| 2022-05-24 |
++------------+
+
+mysql> select ename
+    -> from employee
+    -> where date_of_joining=CURDATE();
++----------------+
+| ename          |
++----------------+
+| harry potter   |
+| ronald weasley |
++----------------+
+
+mysql> select DATE_FORMAT(CURDATE(), '20%y/%m/%d');
++--------------------------------------+
+| DATE_FORMAT(CURDATE(), '20%y/%m/%d') |
++--------------------------------------+
+| 2022/05/24                           |
++--------------------------------------+
+
+
+
