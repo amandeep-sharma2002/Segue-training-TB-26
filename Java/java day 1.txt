@@ -1,0 +1,208 @@
+ Java Programming - Day 1
+---------------------------
+
+1. Classes and Object 
+
+Exercise: Create 3 classes A, B and C. Create display method inside all these classes. Call these display methods from main class and run the program. 
+
+public class Main
+{
+	public static void main(String[] args) {
+		 //reach out to A
+		 A a=new A();   //<-- creating the object
+		 a.display(); //<-- calling the method
+		 
+		 //reach out to B 
+		 B b = new B(); 
+		 b.display(); 
+		 
+		 //reach out to C 
+		 C c=new C(); 
+		 c.display(); 
+	}
+}  
+
+class A{
+    void display(){
+        System.out.println("A");
+    }
+}
+
+class B{
+    void display(){
+        System.out.println("B");
+    }
+}
+
+class C{
+    void display(){
+        System.out.println("C");
+    }
+}
+
+OUTPUT:
+
+A
+B
+C
+
+
+a. Working with Variables and Methods
+
+There are 2 types of variables. 
+i. Instance variable
+ii.Local Variable  
+
+Rule 1:
+-------- 
+If a variable is declared inside the class body, it is called as instance variable
+whereas if a variable is declared inside the method body, it is called as local variable. 
+
+class A{
+    int x; //instance variable 
+    void display(){
+        int y; //local variable 
+    }
+}
+ 
+Rule 2:
+-------
+If a programmer does not initialize instance variable, JVM will initialize it and give default value to it. 
+Whereas if a programmer does not initialize local variable, JVM will also not intialize it. that variable has no value and so if it is used without initialization, it will result in error(compile fail). 
+
+public class Main
+{
+	public static void main(String[] args) {
+		 A a=new A(); 
+		 a.display(); 
+	}
+}  
+ 
+class A{
+    int x; //JVM will initialize x to 0 [x=0] 
+    
+    void display(){
+        int y; //JVM will not initialize it. y=? 
+        System.out.println(x);//0
+        System.out.println(y);//? CF-ERROR 
+    }
+}
+
+/*
+int x; //declatation 
+int y=5; //initialization
+*/
+
+OUTPUT:
+error: variable y might not have been initialized
+        System.out.println(y);//? CF-ERROR 
+
+
+Rule 3:
+-------
+Scope of instance variable is in the entire class.
+Whereas scope of local variable is inside the method in which it is declared. 
+
+
+class A{
+    int x; 
+    
+    void display(){
+        int y=5; //scope is inside display(). 
+        System.out.println(y); //5
+        System.out.println(x); //0
+    }
+    
+    void display1(){
+        System.out.println(y); //ERROR : out of scope
+        System.out.println(x); //0
+    }
+}
+
+Rule 4 
+------
+If the names of local and instance variables are same, then we use 'this' keyword to access instance variable. 
+
+public class Main
+{
+	public static void main(String[] args) {
+	    A a=new A();
+	    a.display();
+	}
+}  
+ 
+class A{
+    int x=5;
+    
+    void display(){
+        int x=6; 
+        System.out.println(x); //local
+        System.out.println(this.x); //instance 
+    }
+}
+
+Working with Methods 
+--------------------
+Exercise:
+public class Main
+{
+	public static void main(String[] args) {
+	    A a=new A(); 
+	    a.display();
+	    a.sum(7,8); //passing the arguments to the method
+	    int result = a.computeSquare(5); 
+	    System.out.println("Square is " + result);
+	    
+	    a.save(3,4); 
+	    int ans = a.compute();
+	    System.out.println("Ans is " + ans);
+	}
+}  
+ 
+class A{
+    
+    int n1;
+    int n2; 
+    
+    void display(){
+        System.out.println("class name is A");
+    }
+    
+    void sum(int n1, int n2){ //int n1 = 7, int n2 = 8 
+        int ans = n1+n2; 
+        System.out.println("Sum is " + ans);
+    }
+    
+    int computeSquare(int n){ //int n = 10
+        int ans = n*n; 
+        return ans;  
+    }
+    
+    void save(int n1,int n2){ //int n1 = 3, int n2 = 4
+          this.n1 = n1; 
+          this.n2 = n2; 
+    }
+    
+    int compute(){
+        int ans = this.n1*this.n2; 
+        return ans; 
+    }
+}
+
+OUTPUT:
+class name is A
+Sum is 15
+Square is 25
+Ans is 12
+
+
+
+
+
+
+
+
+
+
+
+
