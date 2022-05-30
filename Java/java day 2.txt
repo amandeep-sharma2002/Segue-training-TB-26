@@ -1,0 +1,199 @@
+
+Working with Objects : Heap & Stack
+===================================
+All references go n the stack
+All objects go on the heap
+
+A a=new A(); 
+
+A a - reference
+new A() - Object 
+
+Exercise 1
+----------
+
+public class App {
+	public static void main(String[] args) {
+		A a1=new A(); 
+		A a2=new A(); 
+		
+		a1.setX(10);
+		
+		System.out.println(a1.getX()); //10
+		System.out.println(a2.getX()); //0
+		
+		a2.setX(15);
+		
+		System.out.println(a2.getX()); //15
+	}
+}
+
+
+public class A {
+	int x;
+	
+	void setX(int x){
+		this.x = x; 
+	}
+	
+	int getX(){
+		return x;
+	}
+}
+
+
+Exercise 2:
+-----------
+
+public class App {
+	public static void main(String[] args) {
+		Customer c1 = new Customer();
+		Customer c2 = new Customer();
+	/*
+	   Customer c1:100X		100X: CustomerObj:String(name):null:double(balance):0
+	   Customer c2:200X		200X: CustomerObj:String(name):null:double(balance):0		
+	 */
+	c1.setBalance(10000);
+	
+	// Customer c1:100X		100X: CustomerObj:double(balance):10000
+			
+	c2.setBalance(8000);
+		
+	// Customer c2:200X		200X: CustomerObj:double(balance):8000
+	
+	double updatedBalance  = c1.deposit(c1.getBalance(), 4000); 
+	c1.setBalance(updatedBalance);
+	
+	// Customer c1:100X		100X: CustomerObj:double(balance):14000
+	
+	updatedBalance = c2.deposit(c2.getBalance(), 3000);
+	c2.setBalance(updatedBalance);
+	
+	// Customer c2:200X		200X: CustomerObj:double(balance):11000
+	
+	System.out.println("Balance of C1: " + c1.getBalance());
+	System.out.println("Balance of C2: " + c2.getBalance());
+
+	}
+}
+ 
+STACK					 		HEAP
+
+Customer c1:100X	100X: CustomerObj:String(name):null:double(balance):14000
+Customer c2:200X	200X: CustomerObj:String(name):null:double(balance):11000
+
+
+public class Customer {
+	String name; 
+	double balance; 
+	
+	//setters
+	void setBalance(double balance){
+		this.balance = balance; 
+	}
+	
+	//getters
+	double getBalance(){
+		return balance;
+	}
+	
+	double deposit(double balance,double amount){
+		double updatedBalance = balance+amount;
+		return updatedBalance;
+	}
+}
+
+
+Exercise 3: 
+
+public class App {
+	public static void main(String[] args) {
+		Student s1 = new Student();
+		Student s2 = new Student(); 
+		
+		s1.setRoll(1);
+		s1.setMarks(130);
+		
+		s2.setRoll(2);
+		s2.setMarks(150);
+		
+		double percent = s1.computePercent(s1.getMarks()); //total:200
+		System.out.println("Percent of S1: " + percent);
+		
+		percent = s2.computePercent(s2.getMarks()); //total:200
+		System.out.println("Percent of S2: " + percent);
+	}
+}
+/*
+ Percent of S1: 65.0
+ Percent of S2: 75.0
+ */
+
+
+public class Student {
+	int roll;
+	double marks;
+
+	public int getRoll() {
+		return roll;
+	}
+
+	public void setRoll(int roll) {
+		this.roll = roll;
+	}
+
+	public double getMarks() {
+		return marks;
+	}
+
+	public void setMarks(double marks) {
+		this.marks = marks;
+	}
+
+	double computePercent(double marks){
+		double percent = (marks *100) / 200;
+		return percent; 
+	}
+}
+
+
+Inheritance
+===========
+public class App {
+	public static void main(String[] args) {
+		C3 c3 = new C3();
+		c3.m1();
+		c3.m2();
+		c3.m3();
+	}
+}
+
+class C1{ //super 
+	void m1() {
+		System.out.println("M1 in C1");
+	}
+}
+
+class C2 extends C1{ //sub 
+	void m2() {
+		System.out.println("M2 in C2");
+	}
+	//C2 has 2 methods: m1(), m2()
+}
+
+class C3 extends C2{
+	void m3() {
+		System.out.println("M3 in C3");
+	}
+	//c3 has 3 methods: m1(),m2(),m3()
+}
+
+
+//Codeline: C1 --> C2 --> C3 --> C4 
+/*
+ *   C1
+ *   |
+ *   C2
+ *   |
+ *   C3
+
