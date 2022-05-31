@@ -24,7 +24,7 @@ Go over GIT MCQ questions from the internet
 practice SQL notes queries mutiple times.
 
 # Java
-=======
+
 # Section 1
 -----------
 - Working with Multiple Classes 

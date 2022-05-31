@@ -1,0 +1,302 @@
+
+Overriding & Overloading of Methods
+===================================
+To override the method, a programmer must keep the signature of the method same. 
+
+Signature of the method
+-----------------------
+it is computed using 4 parameters
+
+1. Name of the method
+2. Number of arguments of the method 
+3. Data type of arguments 
+4. sequence of data type
+
+Along with the signature, we must ensure that the return type of the method is same and we do not come to weaker access privilege. 
+
+Access privilege of methods
+---------------------------
+1. public  [highest]
+2. protected
+3. default
+4. private  [lowest]
+
+Overloading
+-----------
+If signatures are different, But names of the methods are same, then it is overloading. 
+
+
+Ex1. 
+void display(String name){ }
+void display(String name){}
+--> Overriding 
+
+Ex2. 
+int m1(int x,int y){}
+int m1(int x){ }
+
+--> Signatures are different and hence its not overriding. 
+--> As it is not overriding, but the method names are same, it is Overloading
+
+Ex3. 
+int doStuff(int task){ }
+int doStuff(double task) { }
+
+--> Signatures are different and hence its not overriding. 
+--> As it is not overriding, but the method names are same, it is Overloading
+
+Ex4. 
+void process(String task, int times){ }
+void processing(String task, int times){ }
+
+a. Overloading
+b. Overriding
+c. Nothing, just 2 different methods with diffrent names
+
+Ans: C 
+
+Ex5. 
+void process(int x,int y){ }
+void process(int y, int x){ }
+
+a. Overloading
+b. Overriding
+c. Nothing, just 2 different methods with diffrent names
+
+ANS: b
+
+Ex6. 
+void doNothing(int x, double y){ }
+void doNothing(double x, int y){ }
+
+a. Overloading
+b. Overriding
+c. Nothing, just 2 different methods with diffrent names
+
+ANS: a
+
+Note: This is also called as Runtime/dynamic Polymorphism. 
+
+Exercise: 
+package com.main;
+public class App {
+	public static void main(String[] args) {
+		C3 c3 = new C3();
+		c3.m1();
+		c3.m2();
+		c3.m3();
+	}
+}
+
+class C1{ //super 
+	void m1() { //version 1: 31st may
+		System.out.println("M1 in C1");
+	}
+}
+
+class C2 extends C1{ //sub 
+	void m2() {
+		System.out.println("M2 in C2");
+	}
+	//C2 has 2 methods: m1(), m2()
+}
+
+class C3 extends C2{
+	void m3() {
+		System.out.println("M3 in C3");
+	}
+	//c3 has 3 methods: m1(),m2(),m3()
+	
+	void m1() { //overriding 30th June
+		System.out.println("updated M1 in C3");
+	}
+	
+	void m2() {
+		System.out.println("updated M2 in C2");
+	}
+}
+
+Keywords: final 
+1. class 
+2. method 
+3. variable
+
+1. final class
+--------------
+if a class is marked as final, it cannot be extended. 
+
+final class A{
+	
+}
+class B extends A{ //ERROR: A is final, Cannot be extended. 
+	
+}
+
+2. final method
+----------------
+final method cannot be overrided. 
+
+class A{
+	final void m1() {  
+		System.out.println("m1");
+	}
+}
+
+class B extends A{
+	void m2() {
+		System.out.println("m2");
+	}
+	
+	void m1() { //overriding   : ERROR: m1() in A is final, so cannot be overrided. 
+		System.out.println("updated m1");
+	}
+}
+
+3. final variable
+-----------------
+if a variable is marked as final,
+1. it has be initialized by the programmer. 
+2. It cannot be assigned a value after initialization. 
+
+class A{
+	final int x; //ERROR: x must be initialized, final int x=5
+	final int y=5; 
+	
+	void m1() {
+		y=5; //cannot assign a value to a final variable 
+	}
+}
+
+Keyword: static
+===============
+1. static method 
+----------------
+static method should be accessed in a static way. i.e. a programmer must use the class name to call static method. 
+
+public class App {
+	public static void main(String[] args) {
+		B b=new B(); 
+		b.display(); 
+		
+		B.welcome(); //welcome called in static-way using class-name
+	}
+}
+class B{
+	 
+	void display() {
+		System.out.println("display");
+	}
+	
+	static void welcome() { //As welcome is static, it can be accessed directly using class-name
+		System.out.println("welcome");
+	}
+}
+
+2. static variable 
+------------------
+
+Stack						Heap
+Customer c1:100X		100X:CustObj:double(balance):10000 - double(rateOfInterest): 10X
+Customer c2:200X		200X:CustObj:double(balance):8000 - double(rateOfInterest): 10X
+
+
+customer-static
+---------------
+10X: double(rateOfInterest): 5
+20X:
+
+Tip: static variables do not belong to objects. They belong to the class and are common for all objects. 
+ex1. rateOfInterest is common to all customers. 
+ex2. totalMarks are common for all students. 
+ 
+public class App {
+	public static void main(String[] args) {
+		 Customer c1 = new Customer(); 
+		 Customer c2 = new Customer(); 
+/*
+Customer c1:100X		100X:CustObj:double(balance):0 - double(rateOfInterest): 10X
+Customer c2:200X		200X:CustObj:double(balance):0 - double(rateOfInterest): 10X
+
+10X: double(rateOfInterest): 0
+ */
+		 c1.setBalance(10000);
+		 c2.setBalance(8000);
+		 
+		 Customer.rateOfInterest = 4.5;
+/*
+Customer c1:100X		100X:CustObj:double(balance):10000 - double(rateOfInterest): 10X
+Customer c2:200X		200X:CustObj:double(balance):8000 - double(rateOfInterest): 10X
+
+10X: double(rateOfInterest): 4.5
+ */
+		 double interest = Customer.computeInterest(c1.getBalance()); 
+		 System.out.println(interest); //450
+		 
+		 interest = Customer.computeInterest(c2.getBalance()); 
+		 System.out.println(interest); //360
+		 
+		 Customer.rateOfInterest = 5;
+		 
+		 interest = Customer.computeInterest(c1.getBalance()); 
+		 System.out.println(interest); //500
+		 
+		 interest = Customer.computeInterest(c2.getBalance()); 
+		 System.out.println(interest); //400 
+	}
+} 
+
+
+
+public class Customer {
+	String name; 
+	double balance; 
+	static double rateOfInterest;
+	
+	//setters
+	void setBalance(double balance){
+		this.balance = balance; 
+	}
+	
+	//getters
+	double getBalance(){
+		return balance;
+	}
+	
+	static double computeInterest(double balance){//10000
+		double interest = (balance * rateOfInterest) /100;
+		return interest;
+	}
+	 
+}
+
+
+Keyword: abstract
+==================
+Abstract method
+---------------
+1. An abstract method does not have a body and ends with a semicolon ;
+
+abstract void m1();
+
+2. An abstract method should always be written in an abstract class. 
+
+abstract class C{
+	abstract void m1(); 
+}
+
+3. We cannot create an object of an abstract class.[abstract class cannot be instantiated]
+
+C c=new C(); //ERROR: no object of abstract class
+
+4. If a class extends an abstract, it must override all the methods of the super class OR marks itself as abstract. 
+
+
+Exercise: 
+
+welcome() : P  
+doStuff() : Q  :- pending  : abstract
+goodBye() : R : abstract 
+
+
+  
+
