@@ -95,9 +95,22 @@ AND git MCQs from internet.
 
 SQL Programming 
 ---------------
-refor notes of 5 days from the GIT
+refer notes of 5 days from the GIT
 
 
+50 questions : 60 mins 
+38 correct
+12 wrong 
+
+-> There is enough time 
+-> Donot worry if few question(7-8) go wrong or if u dont understand them. 
+-> Out of 4 answers Mostly only 2 will make sense. 
+
+<read the question>
+a.
+b.
+c.
+d. 
 
 
 

@@ -1,0 +1,212 @@
+
+Keyword: abstract
+==================
+Abstract method
+---------------
+1. An abstract method does not have a body and ends with a semicolon ;
+
+abstract void m1();
+
+2. An abstract method should always be written in an abstract class. 
+
+abstract class C{
+	abstract void m1(); 
+}
+
+3. We cannot create an object of an abstract class.[abstract class cannot be instantiated]
+
+C c=new C(); //ERROR: no object of abstract class
+
+4. If a class extends an abstract, it must override all the methods of the super class OR marks itself as abstract. 
+
+
+Exercise: 
+
+public class App {
+	public static void main(String[] args) {
+		 S s=new S();
+		 s.m1();
+		 s.m2();
+		 s.m3();
+	}
+} 
+  
+abstract class P{
+	abstract void m1();
+}
+
+abstract class Q extends P{
+	void m1() {
+		System.out.println("m1 of P");
+	}
+	
+	abstract void m2();
+}
+
+abstract class R extends Q{
+	void m2() {
+		System.out.println("m2 of Q");
+	}
+	
+	abstract void m3();
+}
+
+class S extends R{
+	void m3() {
+		System.out.println("m3 of R");
+	}
+}
+/*
+	Process
+	-------
+	P: m1()
+	Q: m2()
+	R: m3()
+
+*/ 
+
+Interfacing
+===========
+Rule 1: 
+-------
+Interface is an abstract entity. Cannot be instantiated.
+
+public class App {
+	public static void main(String[] args) {
+		Inter i = new Inter();  //ERROR: Inter cannot be Instantiated(create an object)
+	}
+} 
+ abstract interface Inter{
+	 
+ }
+Rule 2:
+-------
+A variable in interface, by default, is public static final 
+
+Tip: 
+static means, can access using interface name
+final means, cannot assign a value and have to initialize it
+
+Ex. 
+interface Inter{
+	 int x; //public static final int x; : ERROR: final variable must be initialized 
+ }
+
+Ex. 
+public class App {
+	public static void main(String[] args) {
+		 System.out.println(Inter.x); //Can access using Interface name as it is static by default.
+	}
+} 
+interface Inter{
+	 int x=5; 
+ }
+
+Rule 3: 
+A method in interface by default is public & abstract. 
+
+Ex. 
+interface Inter{
+	 void m1() {  //public abstract void m1()
+		 //ERROR: Abstract methods do not specify a body
+	 }
+ }
+
+Ex.
+interface Inter{
+	 void m1();
+ }
+
+Rule 4: 
+A class implements an interface and implements all the methods of the interface. 
+
+public class App {
+	public static void main(String[] args) {
+		 D d=new D();
+		 d.m1();
+	}
+} 
+interface Inter{
+	 void m1();
+}
+
+class D implements Inter{
+	public void m1() {
+		System.out.println("M1 of Inter");
+	};
+}
+
+TIP:
+If a class does not wish to implement any of the interface methods then it can mark itself as abstract and other class can join the code line and finsh the work. 
+
+public class App {
+	public static void main(String[] args) {
+		  E e=new E();
+		  e.m1();
+		  e.m2();
+	}
+} 
+interface Inter{
+	 void m1();
+	 void m2();
+}
+abstract class D implements Inter{
+	//D is supposed to implement/override m1() and m2()
+	
+	public void m1() {
+		System.out.println("m1 of Inter");
+	}
+	
+	//Since D does not wish to override m2() it must mark itself as abstract
+}
+class E extends D{
+	public void m2() {
+		System.out.println("m2 of Inter");
+	}
+}
+
+
+Constructors
+============
+
+Rule 1: Name of the constructor is similar to that of the class. 
+
+Rule 2: Constructor do not have return type as they are called when objects are created. 
+
+Rule 3: Constructors are used to initilize instance variables.
+
+public class App {
+	public static void main(String[] args) {
+		  Book b1 = new Book("Java Programming", 350);
+		  Book b2=new Book("SQL Programming");
+		  Book b3=new Book(450);
+		  Book b4=new Book();
+	}
+} 
+/*
+ * Constructor Overloading
+ */
+class Book{
+	String title;
+	double price; 
+	
+	Book(String title,double price ){
+		this.title = title;
+		this.price = price; 
+	}
+	
+	Book(String title){
+		this.title = title;
+	}
+	
+	Book(double price){	//Argument Constructor 
+		this.price = price;
+	}
+	Book(){		//default: No Argument Constructor 
+		
+	}
+}
+
+
+
+
