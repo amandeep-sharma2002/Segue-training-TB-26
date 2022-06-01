@@ -1,0 +1,124 @@
+Agile Methodology  (5)
+-----------------
+
+Before Agile, Companies used Waterfall model. 
+
+Waterfall Model
+---------------
+project: $5m
+
+Analysis : system analyst : requirement gathering [3 months]
+	| 70-80%
+Design: Technical and Architectural Decisions
+	| DB Design and project architecture [1-2 months]
+Implementation 
+	| coding is done [3-6 months] 
+Testing 
+	| [1 month] The code is tested for performance and functionality 
+Live: Maintenance 
+	  [1-3] Executives go over the system(product)
+
+40%: $2m
+
+Agile Model
+-----------
+Analysis [2 weeks] ==> Sprint-1[2 weeks] : 2 screens
+
+Analysis[2 weeks]  ==> Sprint-2[2 weeks] : 2 screens
+  
+Analysis[2 weeks]  ==> Sprint-3[2 weeks] : 2 screens
+==========================================
+Epic is Over : 6 screens 
+	|
+GO LIve (improvement suggestions)
+
+Analysis [2 weeks] ==> Sprint-1[2 weeks] : 1 screens
+
+Analysis[2 weeks]  ==> Sprint-2[2 weeks] : 2 screens
+  
+Analysis[2 weeks]  ==> Sprint-3[2 weeks] : 2 screens
+
+Sprint: is a time frame given to developers and tester to implement the screens given by analysts.   
+[Developers + Testers]
+
+15 screens : Core System : MVP (Minimum Viable Product)
+
+18 weeks : MVP : 40-50% 
+
+15 screens : MVP 2 
+
+Sprint [2 weeks]
+================
+Roles:
+------
+Development Lead 
+Solution Architect 
+Product Owner (PO)
+Scrum Master
+Senior Developers 
+Developers 
+Associate Developer
+Testers 
+
+30mins: Daily Stand up 
+
+
+JIRA: 2234: Harry 
+
+
+1D: what did u do? 
+
+
+UNIX
+----
+DOS : commands 
+
+UNIX: commands + scripts(backups + files): automate tasks : Bash Scripts
+=> Bash , Ksh (Korn shell-C)
+
+Files: etc/configurations 
+
+etc/hosts 
+
+----------------------
+file structure 
+features 
+advantages 
+disadvantages 
+
+
+GIT [5]
+-------
+go thru the commands that we have done/implemented 
+AND git MCQs from internet. 
+
+
+SQL Programming 
+---------------
+refor notes of 5 days from the GIT
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
