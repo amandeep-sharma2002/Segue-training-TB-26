@@ -363,6 +363,40 @@ student_course(sid,cid,enroll_date)
 course(cid,cname,ccredits,cfee,did)
 department(did,dname)
 
+KEYS
+----
+Primary Key
+-------------
+sid in student table
+cid in course table 
+did in department table 
+
+Foreign Key
+-----------
+did in course table 
+
+Candidate Key
+------------
+semail in student table 
+dname in department table 
+
+super key/composite key
+----------------------
+student_course(sid,cid)
+
+Anomalies
+---------
+- Insertion
+- Updation
+- Deletion 
+
+Normal Forms 
+------------
+1NF
+2NF
+3NF : relationships: 1:1 , 1:M , M:1, M:N 
+BCNF
+
 DDL & DML
 ----------
 mysql> create table student(sid int primary key auto_increment,sname varchar(255),semail varchar(255));
