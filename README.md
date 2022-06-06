@@ -46,7 +46,13 @@ practice SQL notes queries mutiple times.
 - Constructors
 - Encapsulation 
 
-
+# Section 3
+-----------
+- Statements : if(if-else ladder, ternary),switch-case
+- Loops: for(foreach & traditional) & while
+- Primitive variables & casting
+- String
+- Arrays 
 
 
 
