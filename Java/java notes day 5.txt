@@ -1,0 +1,225 @@
+Loops & Statements
+==================
+Statements: if-else , switch-case 
+Loops: for, while 
+
+Example: Read marks from the User, compute percent and display Grade based on the percent as per below rules: 
+percent > 80 : A
+percent > 70 : B
+percent > 60 : C
+		   : D
+
+If
+--
+if-return
+if-else ladder 
+
+Solution:
+import java.util.Scanner; 
+public class App {
+	public static void main(String[] args) {
+		/*
+		 * Taking Input from the User using Scanner class
+		 */
+		System.out.println("Enter the marks");
+		Scanner sc = new Scanner(System.in);
+		double marks = sc.nextDouble();
+		
+		/*
+		 * Compute percentage based on marks
+		 */
+		Result result = new Result();
+		double percent = result.computePercent(marks,400);
+		System.out.println("You scored: " + percent + "%");
+		
+		/*
+		 * Based on percent, compute grade
+		 */
+		System.out.println("****Using if return***");
+		String grade = result.computeGrade(percent);
+		System.out.println("Your Grade is: " + grade);
+		System.out.println("****Using if-else***");
+		grade = result.computeGradeElse(percent);
+		System.out.println("Your Grade is: " + grade);
+	}
+} 
+ 
+class Result{
+	double computePercent(double marks,double total ){
+		double percent = (marks * 100) / total;
+		return percent; 
+	}
+	
+	String computeGrade(double percent){
+		if(percent > 80)
+			return "A";
+		
+		if(percent > 70)
+			return "B"; 
+		
+		if(percent > 60)
+			return "C";
+		
+		return "D";
+	}
+	
+	String computeGradeElse(double percent){
+		String grade ="";
+		if(percent > 80)
+			grade = "A";
+		else 
+		if(percent>70)
+			grade = "B";
+		else 
+		if(percent>60)
+			grade = "C";
+		else 
+			grade="D";
+		
+		return grade; 
+	}
+}
+
+for loop
+========
+<condition>: true
+{
+
+
+}
+<condition>: false - terminate
+ 
+Ex:
+int[] x= {5,6,3,1,8,9,0}; //x[0]=5, x[1]=6, x[2]=3 ......x[6]=0 
+		
+		/*
+		 * Traditional For loop 
+		 */
+		 for(int i=0;i<5;i++) { //i=0,1,2,3,4,5(F) 
+			 System.out.print(i + " "); //0 1 2 3 4
+		 }
+		 /*
+		  * Fancy for loop
+		  */
+		 System.out.println("\n----------");
+		 int i=0;
+		 for(;i<5;) {
+			 System.out.print(i + " ");
+			 i++;
+		 }
+		 /*
+		  * Iteration over an Array
+		  */
+		 System.out.println("\n----------");
+		 for(int j=0;j<7;j++) { //j=0,1,2,3,4,5,6,7(F)
+			 System.out.print(x[j] + " ");
+		 }
+		 System.out.println("\n----------");
+		 /*
+		  * for-each loop: IMP
+		  */
+		 for(int temp :x) {//temp=5, 6, 3, 1, 8, 9, 0   
+			 System.out.print(temp + " ");
+		 }  
+
+
+While Loop
+----------
+Ex.
+public class App {
+	public static void main(String[] args) {
+		int[] x= {5,6,3,1,8,9,0}; //x[0]=5, x[1]=6, x[2]=3 ......x[6]=0 
+		
+		 int i=0;
+		 while(i<7) {
+			 System.out.print(x[i] + " ");
+			 i++;
+		 }
+		 
+		 System.out.println("\n----------");
+		 int j=0;
+		 while(true) {
+			 System.out.print(j + " ");
+			 j++;
+			 
+			 if(j==5)
+				 break;
+		 }
+	}
+} 
+
+Case Study: 
+Take 2 nos. from the User, display the menu with options and perform operation using switch-case. 
+
+import java.util.Scanner; 
+ public class App {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		 System.out.println("Enter no1.");
+		 int x = sc.nextInt();
+		 System.out.println("Enter no2.");
+		 int y = sc.nextInt();
+		 while(true) {
+			 System.out.println("****MENU****");
+			 System.out.println("Press 1. for add");
+			 System.out.println("Press 2. for sub");
+			 System.out.println("Press 3. for mul");
+			 System.out.println("Press 4. for div");
+			 System.out.println("Press 0. to Exit");
+			 System.out.println("Enter your option");
+			 
+			 int input = sc.nextInt(); //1,2,3,4
+			 if(input == 0) {
+				 System.out.println("Exiting.. Thank you.");
+				 break;
+			 }
+			 
+			 switch(input) {
+			 case 1:
+				 System.out.println("Add is " + (x+y));
+				 break;
+			 case 2:
+				 System.out.println("Sub is " + (x-y));
+				 break;
+			 case 3:
+				 System.out.println("Mul is " + (x*y));
+				 break;
+			 case 4:
+				 System.out.println("Div is " + (x/y));
+				 break;
+			 default: 
+				 System.out.println("Invalid Input.. try again");
+			 }
+			 
+		 }
+	}
+}  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
