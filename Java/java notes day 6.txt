@@ -1,0 +1,262 @@
+Java Day 6
+----------
+
+Arrays
+======
+There are multiple ways of creating an Array
+
+1. Assigning values to an array straight away
+int[] x1= {1,2,3,4}; 
+
+2. Creting Array as an Object
+
+3. Combining the first 2 ways : Anonymous way  
+
+TIP: Arrays work because there is an Arrays class present in the memory in java.util package. 
+
+Example 1:
+public class App {
+	public static void main(String[] args) {
+		int[] x= {}; //x has zero values 
+		int[] x1= {1,2,3,4}; //x1 has 4 values 
+		
+		/*
+		 * working with length property. 
+		 */
+		System.out.println(x.length); //0
+		System.out.println(x1.length); //4
+		
+		/* 
+		 * Working with index
+		 */
+		int[] arr = {4,2,5,7,3,8,0};
+		System.out.println(arr[2]);//5
+		System.out.println(arr[6]); //0
+		//System.out.println(arr[7]); //ArrayIndexOutOfBoundsException- AIOOBE
+		
+		arr[2] = 10; 
+		System.out.println(arr[2]);//10
+		
+	}
+} 
+
+Example 2: 
+ public class App {
+	public static void main(String[] args) {
+		/*
+		 * Type 1
+		 */
+		 int[] arr = {3,4,5,1,7,8};
+		
+		 /*
+		  * Type 2: Working with Object 
+		  */
+		 int[] x=new int[6];//[0,0,0,0,0,0]
+		 
+		 System.out.println(x[4]); //0
+		 x[0] =3;
+		 x[3] =5;
+		 
+		 System.out.println(x[0]);
+		 System.out.println(x[3]);
+		 
+		 /*
+		  * Type 3: Combination : Anonymous
+		  */
+		 int[] arr1 = new int[]{3,4,5,1,7,8};
+		 System.out.println(arr1[0]); //3
+		 System.out.println(arr1[3]); //1
+	}
+} 
+
+Array Operations
+================
+i.   Iteration
+ii.  Sorting
+iii. Searching
+
+Example:
+import java.util.Arrays; 
+ public class App {
+	public static void main(String[] args) {
+		 int[] arr = new int[]{3,1,6,2,8,0,4};
+		 
+		 /*
+		  * Iteration
+		  */
+		 for(int i=0;i<arr.length ; i++) { //i=0....7 
+			 System.out.print(arr[i] + " ");
+		 }
+		 
+		 System.out.println("\n******************");
+		 /*
+		  * for-each 
+		  */
+		 for(int temp :arr ) { //
+			 System.out.print(temp + " ");
+		 }
+		 
+		 System.out.println("\n*****After Sorting***");
+		 /*
+		  * Sorting
+		  */
+		 Arrays.sort(arr);
+		 
+		 for(int temp :arr ) { //
+			 System.out.print(temp + " ");
+		 }
+		 
+		 /*
+		  * Binary Search
+		  */
+		 System.out.println("\n*****Searching***");
+		 int index = Arrays.binarySearch(arr, 6);
+		 if(index >=0)
+			 System.out.println("6 found at pos " + index);
+		 else
+			 System.out.println("6 Not found");
+		 
+		 System.out.println("**************");
+		 
+		 index = Arrays.binarySearch(arr, 2);
+		 if(index >=0)
+			 System.out.println("2 found at pos " + index);
+		 else
+			 System.out.println("2 Not found");
+		 
+		 System.out.println("**************");
+		 index = Arrays.binarySearch(arr, 5);
+		 if(index >=0)
+			 System.out.println("5 found at pos " + index);
+		 else
+			 System.out.println("5 Not found");
+		 
+	}
+} 
+
+Example: Sort the array in reverse Order and compute the sum of all the elements of the array. 
+
+import java.util.*; 
+ public class App {
+	public static void main(String[] args) {
+		Integer[] arr = new Integer[]{3,1,6,2,8,0,4};
+		
+		Test test = new Test();
+		arr = test.ascSort(arr);
+		for(int temp : arr) {
+			System.out.print(temp + " ");
+		}
+		System.out.println("\n*************");
+		arr = test.descSort(arr); 
+		for(int temp : arr) {
+			System.out.print(temp + " ");
+		}
+		
+		System.out.println("\n*************");
+		int sum = test.computeSum(arr);
+		System.out.println("Sum is " + sum);
+	}
+} 
+ 
+ class Test{
+	 Integer[] ascSort(Integer[] arr){
+		 Arrays.sort(arr);
+		 return arr;
+	 }
+	 
+	 Integer[] descSort(Integer[] arr){
+		 Arrays.sort(arr, Collections.reverseOrder());
+		 return arr;
+	 }
+	 
+	 int computeSum(Integer[] arr){
+		 int sum = 0; 
+		 for(int temp : arr) { //{3,1,6,2,8,0,4}
+			 sum = sum + temp;  //sum = 3, 4, 10, 12, 20, 20, 24
+		 }
+		 return sum; 
+	 }
+ }
+ 
+Ex. 
+Given an array, calculate the sum of 3 largest numbers of the array. 
+
+import java.util.*; 
+ public class App {
+	public static void main(String[] args) {
+		Integer[] arr = new Integer[]{3,1,6,2,8,0,4};
+		
+		Test test = new Test();
+		 arr = test.descSort(arr); //{8,6,4,3,2,1,0}
+		
+		 int sum = test.computeSum(arr);
+		 System.out.println("Result is " + sum);
+	}
+} 
+ class Test{
+	 Integer[] descSort(Integer[] arr){
+		 Arrays.sort(arr, Collections.reverseOrder());
+		 return arr;
+	 }
+	 int computeSum(Integer[] arr){
+		 int sum = 0; 
+		 int count =1;
+		 for(int temp : arr) {
+			 sum = sum + temp; 
+			 count++; //1 2 3
+			 if(count == 4)
+				 break;
+		 }
+		 return sum; 
+	 }
+ }
+
+
+Example: 
+Compute the largest and the smallest number from the given array. 
+
+import java.util.*; 
+ public class App {
+	public static void main(String[] args) {
+		Integer[] arr = new Integer[]{3,1,6,2,8,0,4};
+		Test test = new Test();
+		int min = test.computeMin(arr);
+		System.out.println("Minimum Number is: " + min);
+		
+		int max = test.computeMax(arr);
+		System.out.println("Maximum Number is: " + max);
+	}
+} 
+ class Test{
+	 int computeMin(Integer[] arr){
+		 if(arr.length == 0)
+			 return 0; 
+		 //minimum
+		 Arrays.sort(arr); //{0,1,2,3,4,6,8}
+		 return arr[0];
+	 }
+	 
+	 int computeMax(Integer[] arr){
+		 if(arr.length == 0)
+			 return 0;
+		 //maximum
+		 Arrays.sort(arr,Collections.reverseOrder()); //{8,6,4,3,2,1,0}
+		 return arr[0]; 
+	 }
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
