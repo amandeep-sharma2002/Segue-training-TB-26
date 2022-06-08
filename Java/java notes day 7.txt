@@ -1,0 +1,235 @@
+Java Day 7
+-----------
+
+Exception Handling
+==================
+
+							Throwable
+
+		Error								Exception
+
+			AssertionError				IOException					RuntimeException
+			StackOverflowError				FileNotFoundException			ArithmeticException
+																			NullPointerException
+																			NumberFormatException
+																			ArrayIndexOutOfBoundsEx																																																			
+Rule 1: 
+A Programmer must always handle the exception. 
+If an Exception is un handled, It will halt the program and that crashes the system altogather. 
+
+Example:
+public class App {
+	public static void main(String[] args) {
+		Test test = new Test(); 
+		int ans = test.computeDiv(4,0);
+		System.out.println(ans);
+		
+		System.out.println("Thank you!!");
+	}
+} 
+ 
+class Test{
+	int computeDiv(int x,int y){
+		return x/y;
+	}
+}
+ 
+OUTPUT:
+Exception in thread "main" java.lang.ArithmeticException: / by zero
+	at com.main.Test.computeDiv(App.java:14)
+	at com.main.App.main(App.java:5)
+
+In the above example, the program encountered an exception at LINE no 5 which is propogating
+from LIne 14 and halts the execution. 
+
+To Counter this, we must handle the exception, 
+
+Example:
+public class App {
+	public static void main(String[] args) {
+		Test test = new Test();
+		
+		try {
+			int ans = test.computeDiv(4,0);
+			System.out.println(ans);
+		}
+		catch(ArithmeticException e) {
+			System.out.println("Divide by Zero is not allowed");
+		}
+		
+		System.out.println("Thank you!!");
+	}
+} 
+ 
+class Test{
+	int computeDiv(int x,int y){
+		return x/y;
+	}
+}
+
+OUTPUT: 
+Divide by Zero is not allowed
+Thank you!!
+
+In the above example, the programmer is handling/catching the exception and hence it is not
+going to the console unhandled and so it goes to the catch block and after that the program continues. 
+
+Example: 
+public class App {
+	public static void main(String[] args) {
+		Test test = new Test();
+		String name=null;
+		try {
+			int length = test.computeLength(name);
+			System.out.println(length);
+		}
+		catch(NullPointerException e) {
+			System.out.println("null value is passed!!");
+		}
+		catch(RuntimeException e) {
+			System.out.println("Something went wrong!!");
+		}
+		catch(Exception e) {
+			System.out.println("Something went wrong!!");
+		}
+		
+		System.out.println("Thank you!!");
+		 
+	}
+} 
+ 
+class Test{
+	int computeLength(String name){
+		return name.length();
+	}
+}
+ 
+OUTPUT:
+null value is passed!!
+Thank you!!
+
+
+In the above program the programmer is writing multiple catch blocks to ensure that exception is handled by all means. 
+NOTE: Only 1 catch block gets executed at a time. 
+
+Rule:
+Exceptions can be thrown by the programmer manually. 
+
+Example: 
+public class App {
+	public static void main(String[] args) {
+		Test test = new Test();
+		try {
+			test.m1(); 			
+		}
+		catch(ArithmeticException e) {
+			System.out.println("Arithmetic problem!!");
+		}
+		catch(RuntimeException e) {
+			System.out.println("Runtime Exception occured..");
+		}
+		
+		 System.out.println("Thank you!!");
+	}
+} 
+ 
+class Test{
+	 void m1() {
+		 RuntimeException re = new RuntimeException();
+		 throw re;
+	 }
+}
+
+OUTPUT:
+Runtime Exception occured..
+Thank you!!
+
+
+Checked vs Un-Checked Exception
+==============================
+1. 
+UnChecked Exceptions do not need warning by the programmer. They can be directly thrown. 
+
+Checked Exceptions need to be warned before being thrown by the programmer. 
+
+2. 
+Handling Unchecked exceptions is a choice of a programmer
+Handling Checked Exceptions is compulsary. 
+
+Example:
+import java.io.IOException;
+ public class App {
+	public static void main(String[] args) {
+		Test test = new Test();
+		test.m1(); //Handling is NOT compulsary as exception thrown is Un-CHECKED. 
+		
+		try { //Handling is compulsary as exception thrown is CHECKED. 
+			test.m2(); 
+		}
+		catch(Exception e) {
+			System.out.println("Exception..");
+		}
+		
+		try { //Handling is compulsary as exception thrown is CHECKED. 
+			test.m3();
+		}
+		catch(IOException e) {
+			System.out.println("IOE");
+		}
+		
+	}
+} 
+ 
+class Test{
+	 void m1(){ //warning is NOT Compulsary as exception thrown is Un-Checked. 
+		 throw new RuntimeException();
+	 }
+	 
+	 void m2() throws Exception{ //Warning is compulsary as exception thrown is CHECKED
+		 throw new Exception();
+	 }
+	 
+	 void m3() throws IOException{//Warning is compulsary as exception thrown is CHECKED
+		 throw new IOException();
+	 }
+}
+
+Case Study:
+Take marks as Input from the User. Compute percentage and assign grades on the basis of following rules:
+
+percent > 80 : A
+percent > 70 : B
+percent > 60 : C
+			 : D
+
+Perform proper validation for following scenarios: 
+
+marks > 100 : "Illegal Marks Entered, cannot be greater than 100 "
+IllegalMarksException
+
+
+marks < 0 : "Invalid Marks Entered, cannot be less than 0 "
+InvalidMarksException
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
