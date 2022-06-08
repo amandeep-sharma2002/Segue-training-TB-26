@@ -54,7 +54,8 @@ practice SQL notes queries mutiple times.
 - String
 - Arrays 
 
-
+# Section 4
+- Exception Handling
 
 
 
