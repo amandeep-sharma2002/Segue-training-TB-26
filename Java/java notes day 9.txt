@@ -1,0 +1,217 @@
+Java Day 9
+==========
+
+JDBC
+----
+- It stands for Java Database Connectivity. 
+
+- It has 4 types
+
+Type 1 Driver: JDBC-ODBC bridge. The driver is platform-dependent as it makes use of ODBC which in turn depends on native libraries of the underlying operating system the JVM is running upon
+
+
+Type 2 Driver: The JDBC type 2 driver, also known as the Native-API driver, is a database driver implementation that uses the client-side libraries of the database. The driver converts JDBC method calls into native calls of the database API. For example: Oracle OCI driver is a type 2 driver.
+
+Type 3 Driver: The JDBC type 3 driver, also known as the Pure Java driver for database middleware,is a database driver implementation which makes use of a middle tier between the calling program and the database. The middle-tier (application server) converts JDBC calls directly or indirectly into a vendor-specific database protocol.
+
+Type 4 Driver: The JDBC type 4 driver, also known as the Direct to Database Pure Java Driver, is a database driver implementation that converts JDBC calls directly into a vendor-specific database protocol.
+
+ref: https://en.wikipedia.org/wiki/JDBC_driver#:~:text=The%20JDBC%20type%201%20driver,calls%20into%20ODBC%20function%20calls.
+
+Setting up JDBC:
+1. download jar file from 
+https://mvnrepository.com/artifact/mysql/mysql-connector-java/8.0.27
+
+and paste it in lib folder of your project. 
+
+2. Add this jar file to build path. 
+
+
+JDBC Connection
+===============
+  
+1. Load the driver
+
+Class.forName(<driver>); 
+
+2. Establish the Connection 
+
+DriverManager class
+
+url: jdbc:mysql://localhost:3306/segue_26
+username: root
+password: 
+
+TO execute the Statement, which has the query, we have 2 methods: 
+
+1. pstmt.executeQuery() : Select 
+2. pstmt.executeUpdate(): Insert, Delete, Update
+
+Examples:
+DB.java
+--------
+package com.main;
+import java.sql.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+ 
+public class DB {
+	
+	Connection con;
+	
+	public void dbConnect() {
+		/*
+		 * Step 1: Load the Driver
+		 */
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			System.out.println("Driver Loaded..");
+		}
+		catch(ClassNotFoundException e) {
+			System.out.println("Driver could not be found...");
+		}		
+		/*
+		 * Step 2: Establish the Connection
+		 */
+		try {
+			con= DriverManager.getConnection("jdbc:mysql://localhost:3306/segue_26", "root", "");
+			System.out.println("Connection Established");
+		}
+		catch(SQLException e) {
+			System.out.println("Connection failure");
+		}
+	}
+	
+	public void dbClose() {
+		try {
+			con.close();
+		} catch (SQLException e) {
+			 System.out.println("Cannot close the connection..");
+		}
+	}
+	
+	public void insertEmployee(String name,double salary, LocalDate dateOfJoining) {
+		dbConnect();
+		String sql="insert into employee(ename,esalary,date_of_joining) values (?,?,?)";
+		/*
+		 * Prepare Statement to execute query
+		 */
+		try {
+			PreparedStatement pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, name);
+			pstmt.setDouble(2, salary);
+			pstmt.setString(3, dateOfJoining.toString());
+ 			pstmt.executeUpdate();
+		}
+		catch(SQLException e) {
+			System.out.println("Incorrect Query..");
+		}
+		dbClose();
+	}
+	
+	ArrayList<Employee> fetchRecords(){
+		dbConnect();
+		ArrayList<Employee> list = new ArrayList<>();
+		//go to DB and fetch the records. 
+		String sql="select * from employee";
+		try {
+			PreparedStatement pstmt = con.prepareStatement(sql);
+			ResultSet rst = pstmt.executeQuery();
+			
+			while(rst.next()) {
+				Employee e = new Employee(); //100X
+				int eno = rst.getInt("eno"); 
+				e.setEno(eno); //5
+				e.setEname(rst.getString("ename")); //harry
+				e.setEsalary(rst.getDouble("esalary")); //85000 
+				e.setDate_of_joining(rst.getString("date_of_joining"));
+				list.add(e);
+			}
+		}
+		catch(SQLException e) {
+			System.out.println("Incorrect Query..");
+			e.printStackTrace();
+		}
+		dbClose();
+		return list; 
+	}
+	
+	
+	
+	
+}
+
+App.java
+--------
+
+import java.time.LocalDate;
+import java.util.*; 
+public class App {
+	public static void main(String[] args) {
+		 DB db = new DB();
+		/*
+		 * Inserting the record in DB
+		 */
+		 //db.insertEmployee("ronald", 75000,LocalDate.now().plusDays(1)); 
+	
+		 /*
+		  * Fetching the record from the DB
+		  */
+		 ArrayList<Employee> list= db.fetchRecords();
+		 
+		 for(Employee e : list) {
+			 System.out.println(e.eno + "--" + e.ename + "--" + e.esalary + "--" + e.date_of_joining);
+		 }
+	}
+} 
+  
+ class Employee{
+	 int eno;
+	 String ename;
+	 double esalary;
+	 String date_of_joining;
+	 
+	public int getEno() {
+		return eno;
+	}
+	public void setEno(int eno) {
+		this.eno = eno;
+	}
+	public String getEname() {
+		return ename;
+	}
+	public void setEname(String ename) {
+		this.ename = ename;
+	}
+	public double getEsalary() {
+		return esalary;
+	}
+	public void setEsalary(double esalary) {
+		this.esalary = esalary;
+	}
+	public String getDate_of_joining() {
+		return date_of_joining;
+	}
+	public void setDate_of_joining(String date_of_joining) {
+		this.date_of_joining = date_of_joining;
+	}
+	 
+	 
+ }
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
