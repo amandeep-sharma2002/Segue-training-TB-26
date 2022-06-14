@@ -56,6 +56,8 @@ practice SQL notes queries mutiple times.
 
 # Section 4
 - Exception Handling
+- Collections: ArrayList & HashMap 
+- JDBC
 
 
 
