@@ -1,0 +1,302 @@
+Angular/JavaScript Day 1
+------------------------
+
+HTML/CSS/JavaScript = Angular Framework 
+
+- TypeScript superset of JavaScript 
+- Powerful libraries 
+
+Events can mostly be classified into 2 types:
+- click
+- form process
+
+Setting up the environment
+==========================
+- download VSCode
+[https://code.visualstudio.com/]
+
+- Download Node 
+
+- Create Angular Project 
+
+npm install -g @angular/cli
+ng new my-first-project
+cd my-first-project
+ng serve
+
+Example 1:
+----------
+Understanding the Connection between HTML, CSS and JavaScript. 
+
+Solution: 
+---------
+<html>
+<head>
+<style>
+.h1{
+color: #FF00FF
+}
+
+h4{
+color: #17EE00
+}
+
+#h2{
+color: #FF1200
+}
+</style>
+<script> 
+function clickMe(){
+alert("Welcome User!!");
+}
+</script> 
+</head>
+<body>
+<h1 class="h1">This is my heading</h1> 
+<h4>This is my heading</h4> 
+<h2 id="h2">This is my heading</h2>
+
+<p> this is a para </p>
+
+<span>This is normal Text</span>
+<span>This is normal Text</span>
+<br />
+<button onclick="clickMe()">Click ME </button>
+</body>
+</html>
+
+Example: 
+Working with JavaScript Events: click & form 
+
+Take Input from the User and read it using JavaScript. 
+
+Solution:
+
+<html>
+    <head>
+        <script>
+            function register(){
+                //alert("works!!");
+                let fname = document.getElementById('fname').value;
+                let lname = document.getElementById('lname').value;
+                let city = document.getElementById('city').value;
+                let message="<h3>Registration Success</h3>Name:" 
+                + fname + ' ' + lname + '<br/>City:' + city;
+                document.getElementById("successMessage").innerHTML=message;
+            }
+        </script>
+    </head>
+
+    <body>
+        <h1>Please Register here</h1>
+
+        <fieldset style="width: 50%;">
+            <legend>Registration</legend> 
+            <label>Frist Name</label> 
+            <input type="text" name="fname" id="fname">
+            <br /><br />
+            <label>Last Name</label> 
+            <input type="text" name="lname" id="lname">
+            <br /><br />
+            <label>Select your City:</label>
+            <select name="city" id="city"> 
+                <option value="Mumbai">Mumbai</option>
+                <option value="Pune">Pune</option>
+                <option value="Nagpur">Nagpur</option>
+            </select>
+            <br /><br />
+            <button onclick="register()">Register Me</button>
+        </fieldset> 
+        <hr>
+        <div id="successMessage"> 
+        </div>
+    </body>
+</html> 
+
+Working with Angular Project
+============================
+ng: Angular command line Utility
+npm: Node Package Manager 
+
+ng creates a module 'app' when the project is created. 
+filename: app.module.ts
+
+Inside this module, ng creates a component 'app'. A component in angular is made of 4 files: 
+
+1. html  : app.component.html
+2. css   : app.component.css
+3. spec: test file : app.component.spec.ts
+4. ts: typescript : app.component.ts 
+
+While creating the project, if we activate angular routing, angular creates a rounting file: app-routing.module.ts
+
+Topic 1:
+Creating and rendering variables
+
+in app.component.ts
+--------------------
+export class AppComponent {
+   x:number = 5;
+   y:number = 10;
+
+}
+
+In app.component.html
+---------------------
+<body>
+    <h2>Welcome to Angular</h2>
+    <p>x= {{x}}</p>
+    <p>y= {{y}}</p>
+    <p>x+y= {{x+y}}</p>
+  </body>
+
+Output
+------
+Welcome to Angular
+x= 5
+
+y= 10
+
+x+y= 15
+
+Example: 
+--------
+Compute the output dynamically with (click) event handler
+
+Solution: 
+
+In app.component.html
+---------------------
+<html>
+  <body>
+    <h2>Welcome to Angular</h2>
+    <p>x= {{x}}</p>
+    <p>y= {{y}}</p>
+
+    <p>Result is {{result}}</p>
+    <hr />
+    <button (click)="add()">Addition</button>
+    <button (click)="sub()">Subtraction</button>
+    <button (click)="mul()">Multiply</button>
+    <button (click)="divide()">Divide</button>
+  </body>
+</html>
+
+in app.component.ts
+--------------------
+export class AppComponent {
+   x:number = 10;
+   y:number = 5;
+   result:number=0;
+
+   add(){
+     console.log("add function called");
+     this.result = this.x+this.y;
+   }
+
+   sub(){
+    console.log("sub function called");
+    this.result = this.x-this.y;
+   }
+
+   mul(){
+    console.log("mul function called");
+    this.result = this.x*this.y;
+   }
+
+   divide(){
+    console.log("div function called");
+    this.result = this.x/this.y;
+   }
+}
+
+Output: 
+x= 10
+y= 5
+
+Result is 2
+
+Addition Subtraction Multiply Divide
+
+Example 3: Display the text in HTML and control it dynamically on button click using *ngIf directive. 
+
+Solution:
+
+In app.component.html
+---------------------
+
+<body>
+    <button (click)="toggleContact()">Contact Info</button>
+    <div *ngIf="show">
+        <h2>Contact Info:</h2>
+        101 Kinston Avenue Mount Mary Street Mumbai.
+        <br />
+        Phone: 8857600957
+        <br />
+        Email: info@gmail.com
+    </div>
+  </body>
+
+in app.component.ts
+--------------------
+
+export class AppComponent {
+    show:boolean=false;
+
+    toggleContact(){
+      this.show= !this.show;
+    }
+}
+
+Example 4: 
+Iterate through the array in HTML file which is declared in TS file. 
+
+in app.component.ts
+--------------------
+arr:number[] =[3,4,2,5,6,7,1];
+names:string[]=['harry','ronald','hermione'];
+
+In app.component.html
+---------------------
+  <body>
+    <div>
+      <ul >
+        <li *ngFor="let temp of arr">
+            {{temp}}
+        </li>
+      </ul>
+    </div>
+    <hr>
+    <ol>
+      <li *ngFor="let temp of names">
+            {{temp}}
+      </li>
+    </ol>
+  </body>
+
+Output
+-------
+3
+4
+2
+5
+6
+7
+1
+
+1. harry
+2. ronald
+3. hermione
+
+
+
+
+
+
+
+
+
+
+
+
+
