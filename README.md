@@ -60,6 +60,12 @@ practice SQL notes queries mutiple times.
 - JDBC
 
 
+# Angular 
+
+# Section 1: 
+- HTML elements, CSS Styling 
+- JavaScript : onClick, document object, getElementById
+- Angular: Installation, Directives: ngIf,ngFor , Event Handlers: onclick
 
 
 
