@@ -1,0 +1,258 @@
+Angular Day 2: 
+==============
+
+Arrow Function
+--------------
+
+Example: Filter the array to display even/odd numbers. 
+
+app.component.ts
+----------------
+export class AppComponent {
+
+  arr:number[];
+
+  constructor(){
+    this.arr = [6,2,4,1,5,8,9];
+  }
+
+  filterEven(){
+    this.arr = this.arr.filter(e=>e%2 == 0); //[6,2,4,8]
+  }
+
+  reset(){
+    this.arr = [6,2,4,1,5,8,9];
+  }
+
+  filterOdd(){
+    this.arr = this.arr.filter(n=>n%2 == 1);//[1,5,9]
+  }
+}
+
+app.component.html
+==================
+<html>
+  <body>
+    <div>
+      <ul>
+        <li *ngFor="let temp of arr">
+          {{temp}}
+        </li>
+      </ul>
+      <hr>
+      <button (click)="filterEven()">Even</button>
+      <button (click)="reset()">Reset</button>
+      <button (click)="filterOdd()">Odd</button>
+    </div>
+  </body>
+</html>
+
+Classes & Objects
+=================
+product.model.ts
+----------------
+export class Product{
+  pid:number;
+  pname: string;
+  price: number;
+  categoryName: string;
+}
+
+app.component.ts
+----------------
+import {Product } from './product.model'
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  product1: Product;
+  product2: Product;
+  product3: Product;
+  products: Product[];
+
+  constructor(){
+    this.product1={
+      pid:1,
+      pname: 'Oppo A12',
+      price: 12500,
+      categoryName: 'mobile'
+    };
+
+    this.product2={
+      pid:2,
+      pname: 'HP Laptop L8',
+      price: 53500,
+      categoryName: 'laptop'
+    };
+
+    this.product3={
+      pid:3,
+      pname: 'Apple IPhone 6',
+      price: 20500,
+      categoryName: 'mobile'
+    };
+
+    this.products = [];
+    this.products.push(this.product1); //[p1]
+    this.products.push(this.product2); //[p1,p2]
+    this.products.push(this.product3); //[p1,p2,p3]
+  }
+
+app.component.html
+------------------
+ <h1>All Products</h1>
+      <div *ngFor="let p of products"> <!-- [p1,p2,p3]-->
+        ID: {{p.pid}} <br />
+        Name: {{p.pname}} <br />
+        Price: {{p.price}} <br />
+        Category:{{p.categoryName}}
+        <hr>
+      </div>
+      
+
+Example: Filter Object array based on criteria selected. 
+--------------------------------------------------------
+interface: OnInit
+method: ngOnInit()
+
+This method is called whenever the component is initialized. 
+
+component loads: constructor => ngOnInit
+
+In angular, as per the convention, all initializations must be done in ngOnInit. 
+
+app.module.ts
+=============
+import { FormsModule } from '@angular/forms';
+
+imports: [
+    BrowserModule,
+    FormsModule
+  ],
+
+app.component.ts
+================
+import { Component, OnInit } from '@angular/core';
+import {Product } from './product.model'
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent implements OnInit{
+  product1: Product;
+  product2: Product;
+  product3: Product;
+  products: Product[];
+  category:string;
+
+  constructor(){ }
+
+  ngOnInit(){
+
+    this.category = 'show-all';
+
+    this.product1={
+      pid:1,
+      pname: 'Oppo A12',
+      price: 12500,
+      categoryName: 'mobile'
+    };
+
+    this.product2={
+      pid:2,
+      pname: 'HP Laptop L8',
+      price: 53500,
+      categoryName: 'laptop'
+    };
+
+    this.product3={
+      pid:3,
+      pname: 'Apple IPhone 6',
+      price: 20500,
+      categoryName: 'mobile'
+    };
+
+    this.productArrayInit();
+  }
+
+  productArrayInit(){
+    this.products = [];
+    this.products.push(this.product1); //[p1]
+    this.products.push(this.product2); //[p1,p2]
+    this.products.push(this.product3); //[p1,p2,p3]
+  }
+
+  onCategorySelect(){
+    this.productArrayInit(); //[p1,p2,p3]
+
+    if(this.category != 'show-all')
+        this.products = this.products
+                    .filter(p=>p.categoryName == this.category);
+  }
+}
+
+app.component.html
+==================
+<html>
+  <body>
+    <h1>All Products</h1>
+      <div *ngFor="let p of products"> <!-- [p1,p2,p3]-->
+        ID: {{p.pid}} <br />
+        Name: {{p.pname}} <br />
+        Price: {{p.price}} <br />
+        Category:{{p.categoryName}}
+        <hr>
+      </div>
+      <label>Select Category: </label>
+      <select [(ngModel)]='category' 
+      (change)="onCategorySelect()">
+        <option value="show-all">show all</option>
+        <option value="mobile">mobile</option>
+        <option value="laptop">laptop</option>
+      </select>
+  </body>
+</html>
+
+OUTPUT:
+=======
+All Products
+
+ID: 1
+Name: Oppo A12
+Price: 12500
+Category:mobile
+
+ID: 2
+Name: HP Laptop L8
+Price: 53500
+Category:laptop
+
+ID: 3
+Name: Apple IPhone 6
+Price: 20500
+Category:mobile
+Select Category:
+ 
+show all
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

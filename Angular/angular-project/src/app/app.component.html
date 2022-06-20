@@ -1,17 +1,18 @@
 <html>
   <body>
-    <div>
-      <ul >
-        <li *ngFor="let temp of arr">
-            {{temp}}
-        </li>
-      </ul>
-    </div>
-    <hr>
-    <ol>
-      <li *ngFor="let temp of names">
-            {{temp}}
-      </li>
-    </ol>
+    <h1>All Products</h1>
+      <div *ngFor="let p of products"> <!-- [p1,p2,p3]-->
+        ID: {{p.pid}} <br />
+        Name: {{p.pname}} <br />
+        Price: {{p.price}} <br />
+        Category:{{p.categoryName}}
+        <hr>
+      </div>
+      <label>Select Category: </label>
+      <select [(ngModel)]='category' (change)="onCategorySelect()">
+        <option value="show-all">show all</option>
+        <option value="mobile">mobile</option>
+        <option value="laptop">laptop</option>
+      </select>
   </body>
 </html>
