@@ -65,7 +65,16 @@ practice SQL notes queries mutiple times.
 # Section 1: 
 - HTML elements, CSS Styling 
 - JavaScript : onClick, document object, getElementById
-- Angular: Installation, Directives: ngIf,ngFor , Event Handlers: onclick
+- Angular: Installation, Directives: ngIf,ngFor , Event Handlers: onclick, onchange
+
+# Section 2
+- Working with arrow functions: filters 
+- Form Processing: Template based forms
+
+
+
+
+
 
 
 
