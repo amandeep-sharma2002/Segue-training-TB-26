@@ -1,18 +1,41 @@
 <html>
   <body>
-    <h1>All Products</h1>
-      <div *ngFor="let p of products"> <!-- [p1,p2,p3]-->
-        ID: {{p.pid}} <br />
-        Name: {{p.pname}} <br />
-        Price: {{p.price}} <br />
-        Category:{{p.categoryName}}
-        <hr>
+      <div>
+        <h2>User Registration</h2>
+        <form (submit)="onFormSubmit(userForm)"
+              #userForm="ngForm">
+
+            <label>Enter the Name: </label>
+            <input type="text" name="name" ngModel required pattern="[a-zA-Z ]+"
+            #name="ngModel">
+            <span *ngIf="name.invalid && name.touched">
+              <small *ngIf="name.errors.required">Please enter the name</small>
+              <small *ngIf="name.errors.pattern">Name must have characters and space. no numbers</small>
+            </span>
+            <br /><br />
+            <label>Enter the username</label>
+            <input type="text" name="username" ngModel required pattern="[a-zA-Z0-9 _#]+"
+            minlength="3" maxlength="15" #username="ngModel">
+            <span *ngIf="username.invalid && username.touched">
+              <small *ngIf="username.errors.required">Please enter the name</small>
+              <small *ngIf="username.errors.minlength">Minimum characters needed are 3</small>
+              <small *ngIf="username.errors.maxlength">Maximum characters allowed are 15</small>
+              <small *ngIf="username.errors.pattern">Username must have characters and space.Omly _ and # are allowed</small>
+            </span>
+            <br /><br />
+            <label>Enter the Password:</label>
+            <input type="password" name="password" ngModel required pattern="[a-zA-Z0-9 %#$_]+"
+            minlength="6" maxlength="15" #password="ngModel">
+            <span *ngIf="password.invalid && password.touched">
+              <small *ngIf="password.errors.required">Please enter the name</small>
+              <small *ngIf="password.errors.minlength">Minimum characters needed are 6</small>
+              <small *ngIf="password.errors.maxlength">Maximum characters allowed are 15</small>
+              <small *ngIf="password.errors.pattern">password must have characters and space.Omly _ and # are allowed</small>
+            </span>
+            <br /><br />
+            <input type="submit" value="Register" [disabled]="!userForm.valid">
+        </form>
       </div>
-      <label>Select Category: </label>
-      <select [(ngModel)]='category' (change)="onCategorySelect()">
-        <option value="show-all">show all</option>
-        <option value="mobile">mobile</option>
-        <option value="laptop">laptop</option>
-      </select>
+
   </body>
 </html>

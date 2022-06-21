@@ -1,0 +1,193 @@
+Angular Day 3
+-------------
+
+Form Processing
+===============
+There are 2 ways of processing a form. 
+- Template based 
+- Reactive 
+
+Template Based Forms
+====================
+Step 1: 
+Add FormsModule in app.module.ts
+
+import { FormsModule } from '@angular/forms';
+
+imports: [
+    BrowserModule,
+    FormsModule
+  ],
+
+Step 2: Create a Form in HTML 
+
+<form (submit)="onFormSubmit()" >
+            <label>Enter the Name: </label>
+            <input type="text" name="name">
+            <br /><br />
+            <label>Enter the username</label>
+            <input type="text" name="username">
+            <br /><br />
+            <label>Enter the Password:</label>
+            <input type="password" name="password">
+            <br /><br />
+            <input type="submit" value="Register">
+        </form>
+
+Step 3: Convert the HTML form into Angular Form
+
+ <form (submit)="onFormSubmit()" 
+              #userForm="ngForm">
+
+All fields must become ngModel. 
+
+<input type="text" name="name" ngModel>
+<input type="text" name="username" ngModel>
+<input type="password" name="password" ngModel>
+
+Step 4: 
+Pass the Form as argument to onFormSubmit() function
+
+<form (submit)="onFormSubmit(userForm)" 
+              #userForm="ngForm">
+
+IN TS file
+----------
+onFormSubmit(userForm:NgForm){
+     }
+
+Step 5: Read all the values of the form fields and attach it to User object. (create a model class User. )
+
+onFormSubmit(userForm:NgForm){
+      let nameVal = userForm.value.name;
+      let usernameVal = userForm.value.username;
+      let passwordVal = userForm.value.password;
+      this.user={
+        name: nameVal, 
+        username: usernameVal,
+        password: passwordVal
+      }
+      
+  }
+
+HTML Validators
+===============
+- required
+- pattern 
+- minlength
+- maxlength
+
+name: name should only have characters(a-zA-Z ).  
+
+username: Username pattern should be (a-zA-Z0-9 #_). 
+min: 3
+max: 15
+
+password: Password pattern should  (a-zA-Z0-9 #_)
+min: 6
+max: 15
+
+Case Study:
+===========
+Create a registration form, Perform validation and read the values in User Object. 
+
+
+app.module.ts
+=============
+import { FormsModule } from '@angular/forms';
+
+ imports: [
+    BrowserModule,
+    FormsModule
+  ],
+
+User.model.ts
+=============
+export class User{
+  name: string;
+  username: string;
+  password: string;
+}
+
+app.component.ts
+================
+import { Component,   } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import {User} from './User.model';
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  user: User;
+
+  onFormSubmit(userForm:NgForm){
+      let nameVal = userForm.value.name;
+      let usernameVal = userForm.value.username;
+      let passwordVal = userForm.value.password;
+      this.user={
+        name: nameVal,
+        username: usernameVal,
+        password: passwordVal
+      }
+      console.log(this.user);
+  }
+}
+
+app.component.html
+==================
+<html>
+  <body>
+      <div>
+        <h2>User Registration</h2>
+        <form (submit)="onFormSubmit(userForm)"
+              #userForm="ngForm">
+
+            <label>Enter the Name: </label>
+            <input type="text" name="name" ngModel required pattern="[a-zA-Z ]+"
+            #name="ngModel">
+            <span *ngIf="name.invalid && name.touched">
+              <small *ngIf="name.errors.required">Please enter the name</small>
+              <small *ngIf="name.errors.pattern">Name must have characters and space. no numbers</small>
+            </span>
+            <br /><br />
+            <label>Enter the username</label>
+            <input type="text" name="username" ngModel required pattern="[a-zA-Z0-9 _#]+"
+            minlength="3" maxlength="15" #username="ngModel">
+            <span *ngIf="username.invalid && username.touched">
+              <small *ngIf="username.errors.required">Please enter the name</small>
+              <small *ngIf="username.errors.minlength">Minimum characters needed are 3</small>
+              <small *ngIf="username.errors.maxlength">Maximum characters allowed are 15</small>
+              <small *ngIf="username.errors.pattern">Username must have characters and space.Omly _ and # are allowed</small>
+            </span>
+            <br /><br />
+            <label>Enter the Password:</label>
+            <input type="password" name="password" ngModel required pattern="[a-zA-Z0-9 %#$_]+"
+            minlength="6" maxlength="15" #password="ngModel">
+            <span *ngIf="password.invalid && password.touched">
+              <small *ngIf="password.errors.required">Please enter the name</small>
+              <small *ngIf="password.errors.minlength">Minimum characters needed are 6</small>
+              <small *ngIf="password.errors.maxlength">Maximum characters allowed are 15</small>
+              <small *ngIf="password.errors.pattern">password must have characters and space.Omly _ and # are allowed</small>
+            </span>
+            <br /><br />
+            <input type="submit" value="Register" [disabled]="!userForm.valid">
+        </form>
+      </div>
+
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
