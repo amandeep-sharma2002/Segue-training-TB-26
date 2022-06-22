@@ -70,8 +70,12 @@ practice SQL notes queries mutiple times.
 # Section 2
 - Working with arrow functions: filters 
 - Form Processing: Template based forms
+- Case Study
 
+# Cloud Computing: AWS/Azure 
 
+- Types of Clouds: public, private, hybrid
+- Types of Service Models: IaaS, PaaS, SaaS 
 
 
 
