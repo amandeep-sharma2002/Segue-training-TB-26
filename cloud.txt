@@ -1,0 +1,65 @@
+Cloud:AWS & Azure 
+
+-> application 
+
+Q. How many end users are going to use this app? 
+=> 200,000
+
+Q. How much load(No. of Users) can 1 server handle?
+=> 1000 users per server 
+
+Q. How are we going to manage and maintain so many servers? 
+Q. What about security? 
+=> We go to cloud companies. 
+
+
+Cloud companies
+---------------
+- we offer unlimited number of server through our datacenters that are through out the world. 
+- we charge you on pay-as-you basis. What ever server you use, we will charge only that much. 
+- We will take care of security of your data and application. 
+
+Clouds can be classified into 3 types
+- private 
+- public 
+- hybrid 
+
+PRIVATE CLOUD
+=============
+=> if a company sets up servers in there own premise, its called as private cloud. 
+
+Disadvantage:
+-------------
+=> Security exposure
+
+PUBLIC CLOUD
+============
+=> going to cloud companies, saving data and using servers from their data centers. 
+
+Disadv
+------
+None
+
+Hybrid CLOUD
+============
+datacentes + private 
+
+
+Type of Service Model
+=====================
+There are 3 types of service. 
+
+1. Infrastructure as a service : you get the server, installation, environment setup, app deploy 
+
+2. Platform as a service: I get a full configured server. Just deploy the app and we are good to use it. 
+
+3. Software as a service: Clouds sell software as well. ex. Accounting, CRM, SCM 
+
+
+Conclusion: 
+===========
+As developers, we must prefer Public Cloud with platform-as-a-service model. 
+
+
+
+
